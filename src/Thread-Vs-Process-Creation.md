@@ -299,6 +299,8 @@ clone3({flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYS
 This help ensures that the new thread is properly integrated into the parent's environment, sharing necessary resources while having its own stack and thread-specific storage. The use of `clone3` over older variants like `clone` allows for more precise control over the creation of threads with modern flags and structures.
 
 ## Process Creation
+
+Let's take below code as the example:
 ```c
 #include <stddef.h>
 #include <sys/types.h>
@@ -320,7 +322,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-### Some of the Ket Steps Involved here
+### Some of the Key Steps Involved here
 
 **Program Execution**
 
