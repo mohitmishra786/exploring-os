@@ -1,4 +1,4 @@
-# Exploring Operating Systems: Daily Deep Dive Implementation in C
+# Exploring Operating Systems: 69 Days of Deep Dive Implementation in C
 
 ## Overview
 This repository is a journey through Operating System concepts, with practical implementations in C. Each day focuses on a specific topic, providing theoretical understanding and hands-on coding experience.
@@ -12,9 +12,9 @@ This repository is a journey through Operating System concepts, with practical i
 
 | Day | Topic | Concept Category | Difficulty Level | Implementation Focus |
 |-----|-------|-----------------|-----------------|----------------------|
-| 1 | Introduction to Operating Systems | Fundamentals | Easy | OS Definition, History |
-| 2 | Computer System Architecture | Fundamentals | Medium | Hardware Components |
-| 3 | Operating System Structure | Architecture | Medium | Monolithic, Microkernel |
+| 1 | Memory Allocation Internals (malloc, free) | Memory Management | Hard | Custom Memory Allocator |
+| 2 | Advanced System Call Implementation | Low-Level Programming | Hard | Syscall Wrapper Design |
+| 3 | Dynamic Memory Management Techniques | Memory Management | Hard | Memory Pool Strategies |
 | 4 | Process Concept | Processes | Easy | Process Definition |
 | 5 | Process States and Transitions | Processes | Medium | State Diagram Implementation |
 | 6 | Process Creation Mechanisms | Processes | Medium | Fork(), Exec() Syscalls |
@@ -44,43 +44,43 @@ This repository is a journey through Operating System concepts, with practical i
 | 30 | I/O System Management | I/O Systems | Medium | I/O Devices |
 | 31 | Disk Scheduling Algorithms | I/O Systems | Hard | SCAN, C-SCAN |
 | 32 | Interrupt Handling | Low-Level | Hard | Interrupt Vectors |
-| 33 | System Calls | Low-Level | Medium | Syscall Implementation |
-| 34 | Shell Programming | Low-Level | Medium | Basic Command Interpreter |
+| 33 | Advanced System Call Tracing | Low-Level | Hard | Syscall Interception |
+| 34 | Kernel Module Development | Low-Level | Hard | Loadable Kernel Modules |
 | 35 | Inter-Process Communication | IPC | Hard | Pipes, Message Queues |
-| 36 | Shared Memory | IPC | Hard | Implementation Techniques |
-| 37 | Socket Programming | Networking | Hard | Client-Server Communication |
+| 36 | Shared Memory Advanced | IPC | Hard | Low-Level Shared Memory |
+| 37 | Socket Programming Deep Dive | Networking | Hard | Raw Socket Implementation |
 | 38 | CPU Scheduling Advanced | Scheduling | Hard | Multi-Level Queues |
-| 39 | Real-Time Operating Systems | Specialized | Hard | Characteristics |
-| 40 | Linux Kernel Basics | Kernel | Hard | Kernel Module Development |
-| 41 | Process Synchronization | Synchronization | Hard | Peterson's Algorithm |
-| 42 | Resource Allocation Graph | Synchronization | Hard | Deadlock Representation |
-| 43 | Memory Fragmentation | Memory | Medium | Internal, External |
-| 44 | Cache Management | Memory | Hard | Cache Mapping Techniques |
-| 45 | File Compression Techniques | File Systems | Medium | Basic Algorithms |
-| 46 | Device Drivers | Low-Level | Hard | Basic Driver Writing |
-| 47 | Security Mechanisms | Security | Hard | Access Control |
-| 48 | Process Scheduling Simulation | Scheduling | Hard | Comprehensive Simulator |
-| 49 | Network File Systems | File Systems | Hard | Distributed FS Concepts |
-| 50 | Error Handling in OS | Low-Level | Medium | Exception Management |
-| 51 | Virtualization Concepts | Advanced | Hard | Container Technologies |
-| 52 | Distributed OS Principles | Advanced | Hard | Distributed Algorithms |
-| 53 | Embedded OS Fundamentals | Specialized | Hard | RTOS Basics |
-| 54 | Microkernel Design | Architecture | Hard | Design Principles |
-| 55 | Performance Monitoring | Advanced | Hard | Profiling Techniques |
-| 56 | Parallel Processing | Advanced | Hard | Parallel Computation |
-| 57 | Fault Tolerance | Advanced | Hard | Redundancy Mechanisms |
-| 58 | Load Balancing | Advanced | Hard | Scheduling Strategies |
-| 59 | Cloud OS Concepts | Advanced | Hard | Cloud Computing Principles |
-| 60 | Container Orchestration | Advanced | Hard | Docker, Kubernetes Basics |
-| 61 | Security Vulnerabilities | Security | Hard | Buffer Overflow |
-| 62 | Cryptography in OS | Security | Hard | Encryption Techniques |
-| 63 | Malware Detection | Security | Hard | Basic Techniques |
-| 64 | OS Forensics | Security | Hard | Investigation Methods |
-| 65 | Power Management | Advanced | Medium | Energy Efficiency |
-| 66 | Green Computing | Advanced | Medium | Sustainable Computing |
-| 67 | Cross-Platform Development | Advanced | Hard | Portable OS Components |
-| 68 | Emerging OS Technologies | Advanced | Hard | Future Trends |
-| 69 | Comprehensive OS Project | Project | Hard | Integrated OS Concepts |
+| 39 | Real-Time Operating Systems Internals | Specialized | Hard | RTOS Kernel Design |
+| 40 | Linux Kernel Memory Management | Kernel | Hard | Slab Allocator |
+| 41 | Process Synchronization Advanced | Synchronization | Hard | Peterson's Algorithm |
+| 42 | Resource Allocation Graph Theory | Synchronization | Hard | Deadlock Representation |
+| 43 | Memory Fragmentation Techniques | Memory | Medium | Advanced Fragmentation |
+| 44 | Cache Management Internals | Memory | Hard | Cache Coherence |
+| 45 | File System Journaling | File Systems | Hard | Transaction Mechanisms |
+| 46 | Device Driver Development | Low-Level | Hard | Character Device Drivers |
+| 47 | Security Mechanism Implementation | Security | Hard | Access Control Kernel |
+| 48 | Process Scheduling Simulator | Scheduling | Hard | Comprehensive Simulator |
+| 49 | Network File Systems Internals | File Systems | Hard | Distributed FS Design |
+| 50 | Error Handling Kernel Mechanisms | Low-Level | Hard | Exception Management |
+| 51 | Virtual Memory Hypervisor | Advanced | Hard | Virtualization Techniques |
+| 52 | Distributed OS Algorithms | Advanced | Hard | Consensus Protocols |
+| 53 | Embedded OS Kernel Design | Specialized | Hard | Minimal Kernel |
+| 54 | Microkernel Advanced Design | Architecture | Hard | Message Passing |
+| 55 | OS Performance Profiling | Advanced | Hard | Kernel Tracing |
+| 56 | Parallel Processing Primitives | Advanced | Hard | Low-Level Parallelism |
+| 57 | Fault Tolerance Mechanisms | Advanced | Hard | Recovery Techniques |
+| 58 | Advanced Load Balancing | Advanced | Hard | Scheduling Strategies |
+| 59 | Containerization Internals | Advanced | Hard | Namespace Implementation |
+| 60 | Kernel Synchronization Primitives | Advanced | Hard | Spinlocks, RCU |
+| 61 | Security Vulnerability Analysis | Security | Hard | Buffer Overflow |
+| 62 | Cryptographic Kernel Mechanisms | Security | Hard | Encryption Primitives |
+| 63 | Malware Detection Techniques | Security | Hard | Kernel-Level Detection |
+| 64 | OS Forensics Deep Dive | Security | Hard | Kernel Trace Analysis |
+| 65 | Memory Allocator Design | Memory | Hard | Custom Heap Implementation |
+| 66 | Advanced IPC Mechanisms | IPC | Hard | Advanced Signaling |
+| 67 | Kernel Debugging Techniques | Low-Level | Hard | Kernel Crash Analysis |
+| 68 | Advanced Syscall Handling | Low-Level | Hard | Syscall Optimization |
+| 69 | Complete OS Kernel Prototype | Project | Hard | Minimal Bootable Kernel |
 
 ## Contributing
 - Detailed code implementations welcome
@@ -93,12 +93,12 @@ This repository is a journey through Operating System concepts, with practical i
 - Real-world problem-solving techniques
 
 ## Prerequisites
-- Basic C Programming
-- Basic Computer Science Knowledge
-- Linux/Unix Environment Recommended
+- C Programming
+- Deep Computer Science Knowledge
+- Linux/Unix Kernel Understanding Recommended
 
 ## License
-[LICENCE](LICENSE)
+[LICENSE](LICENSE)
 
 ## Disclaimer
-This is an educational resource for understanding Operating Systems through practical implementation.
+This is an advanced educational resource for understanding Operating Systems through in-depth implementation.
