@@ -2,6 +2,8 @@
 
 >This question can come to anyone's mind who is trying to understand the memory structure.
 
+![Image](https://i.sstatic.net/epGfE.png)
+
 #### **RLIMIT_AS**
 
 - **Purpose**: RLIMIT_AS sets the maximum size of the process's virtual address space in bytes. 
