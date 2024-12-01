@@ -173,13 +173,7 @@ gcc -o process_states process_states.c -pthread
    - Linux Process Management Docs: https://www.kernel.org/doc/html/latest/process/index.html
    - POSIX Thread Programming: https://pubs.opengroup.org/onlinepubs/9699919799/
 
-2. **Stack Overflow Threads**
-   - "Understanding Linux Process States": https://stackoverflow.com/questions/24641592/
-   - "Process State Transitions in Unix": https://stackoverflow.com/questions/30119834/
-   - "Detailed Linux Process Management": https://stackoverflow.com/questions/44125/
-
-3. **Stack Exchange Discussions**
-   - Computer Science Stack Exchange - Process States: https://cs.stackexchange.com/questions/tagged/process-states
+2. **Stack Exchange Discussions**
    - Unix & Linux Stack Exchange - Process Management: https://unix.stackexchange.com/questions/tagged/process
 
 ### Video Tutorials
