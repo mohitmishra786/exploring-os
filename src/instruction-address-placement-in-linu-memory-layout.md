@@ -43,6 +43,9 @@ $ ./a.out
 0x401136%
 ```
 
+Expected output will be something like below:
+![Expected Output of Above Program](./images/process-memory-layout-with-no-pie.png)
+
 You can confirm the load address using `readelf`:
 
 ```bash
