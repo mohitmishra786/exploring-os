@@ -4,16 +4,13 @@ title: Daily OS Explorations
 ---
 
 <div class="content-list">
-    <h1>Daily OS Explorations</h1>
-    <div class="post-list">
+    <h1>{{ page.title }}</h1>
+    <ol class="post-list">
         {% assign sorted_posts = site.pages | where_exp: "item", "item.path contains 'src/day-'" | sort: 'path' %}
         {% for post in sorted_posts %}
-            <div class="post-item">
-                <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
-                {% if post.excerpt %}
-                    <p>{{ post.excerpt }}</p>
-                {% endif %}
-            </div>
+            <li class="post-item">
+                <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            </li>
         {% endfor %}
-    </div>
+    </ol>
 </div>
