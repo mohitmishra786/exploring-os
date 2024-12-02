@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Can we access files in a directory without x-permission?"
+permalink: /extras/accessing-directory-without-x-permission.html
+---
+
 ## Can we access files in a directory without x-permission?
 
 We can have multiple questions coming in our minds:

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Thread vs Process Creation | Exploring Operating Systems</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Thread vs Process Creation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="69 Days of Deep Dive Implementation in C" />
+<meta property="og:description" content="69 Days of Deep Dive Implementation in C" />
+<link rel="canonical" href="http://localhost:4000/exploring-os/extras/Thread-Vs-Process-Creation.html" />
+<meta property="og:url" content="http://localhost:4000/exploring-os/extras/Thread-Vs-Process-Creation.html" />
+<meta property="og:site_name" content="Exploring Operating Systems" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Thread vs Process Creation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"69 Days of Deep Dive Implementation in C","headline":"Thread vs Process Creation","url":"http://localhost:4000/exploring-os/extras/Thread-Vs-Process-Creation.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/exploring-os/assets/css/style.css?v=0035f7ba76779f6ca67683c9ee1c6858c0cc493d">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/exploring-os/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/exploring-os/">Exploring Operating Systems</a></h1>
+      
+
+      <h2 id="thread-vs-process-creation">Thread vs Process Creation</h2>
+
+<p>Let’s first take a look into thread creation.</p>
+<h2 id="thread-creation">Thread Creation</h2>
+<p>Let’s create a very simple program where we will be creating a thread and joins it.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">newThread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">;</span>
+    <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">newThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">pthread_join</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Feel free to add some <code class="language-plaintext highlighter-rouge">printf</code> statement to help understand output, you can do like below:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">newthread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Thread running</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">rc</span><span class="p">;</span>
+
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">newthread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rc</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"ERROR; return code from pthread_create() is %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">rc</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="c1">// Exit with error if thread creation fails</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Main program waiting for thread to complete</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">pthread_join</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Thread joined</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To compile and run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc threadCreation.c <span class="nt">-o</span> threadCreation <span class="nt">-pthread</span>
+./threadCreation
+</code></pre></div></div>
+
+<p>Output will look like:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Main program waiting <span class="k">for </span>thread to <span class="nb">complete
+</span>Thread running
+Thread joined
+</code></pre></div></div>
+
+<p>But, these output cannot help us understand any of the system call that are getting invoked here. Let’s use <code class="language-plaintext highlighter-rouge">strace</code> to help with tracing the program.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strace ./threadCreation
+</code></pre></div></div>
+
+<p>It will give the output as below:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>execve<span class="o">(</span><span class="s2">"./th"</span>, <span class="o">[</span><span class="s2">"./th"</span><span class="o">]</span>, 0x7ffe22c1ed10 /<span class="k">*</span> 75 vars <span class="k">*</span>/<span class="o">)</span> <span class="o">=</span> 0
+brk<span class="o">(</span>NULL<span class="o">)</span>                               <span class="o">=</span> 0x62f72cbf9000
+arch_prctl<span class="o">(</span>0x3001 /<span class="k">*</span> ARCH_??? <span class="k">*</span>/, 0x7ffd43db1be0<span class="o">)</span> <span class="o">=</span> <span class="nt">-1</span> EINVAL <span class="o">(</span>Invalid argument<span class="o">)</span>
+mmap<span class="o">(</span>NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, <span class="nt">-1</span>, 0<span class="o">)</span> <span class="o">=</span> 0x7f8979a49000
+access<span class="o">(</span><span class="s2">"/etc/ld.so.preload"</span>, R_OK<span class="o">)</span>      <span class="o">=</span> <span class="nt">-1</span> ENOENT <span class="o">(</span>No such file or directory<span class="o">)</span>
+openat<span class="o">(</span>AT_FDCWD, <span class="s2">"/etc/ld.so.cache"</span>, O_RDONLY|O_CLOEXEC<span class="o">)</span> <span class="o">=</span> 3
+newfstatat<span class="o">(</span>3, <span class="s2">""</span>, <span class="o">{</span><span class="nv">st_mode</span><span class="o">=</span>S_IFREG|0644, <span class="nv">st_size</span><span class="o">=</span>90175, ...<span class="o">}</span>, AT_EMPTY_PATH<span class="o">)</span> <span class="o">=</span> 0
+mmap<span class="o">(</span>NULL, 90175, PROT_READ, MAP_PRIVATE, 3, 0<span class="o">)</span> <span class="o">=</span> 0x7f8979a32000
+close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> 0
+openat<span class="o">(</span>AT_FDCWD, <span class="s2">"/lib/x86_64-linux-gnu/libc.so.6"</span>, O_RDONLY|O_CLOEXEC<span class="o">)</span> <span class="o">=</span> 3
+<span class="nb">read</span><span class="o">(</span>3, <span class="s2">"</span><span class="se">\1</span><span class="s2">77ELF</span><span class="se">\2\1\1\3\0\0\0\0\0\0\0\0\3\0</span><span class="s2">&gt;</span><span class="se">\0\1\0\0\0</span><span class="s2">P</span><span class="se">\2</span><span class="s2">37</span><span class="se">\2\0\0\0\0\0</span><span class="s2">"</span>..., 832<span class="o">)</span> <span class="o">=</span> 832
+pread64<span class="o">(</span>3, <span class="s2">"</span><span class="se">\6\0\0\0\4\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">"</span>..., 784, 64<span class="o">)</span> <span class="o">=</span> 784
+pread64<span class="o">(</span>3, <span class="s2">"</span><span class="se">\4\0\0\0</span><span class="s2"> </span><span class="se">\0\0\0\5\0\0\0</span><span class="s2">GNU</span><span class="se">\0\2\0\0\3</span><span class="s2">00</span><span class="se">\4\0\0\0\3\0\0\0\0\0\0\0</span><span class="s2">"</span>..., 48, 848<span class="o">)</span> <span class="o">=</span> 48
+pread64<span class="o">(</span>3, <span class="s2">"</span><span class="se">\4\0\0\0\2</span><span class="s2">4</span><span class="se">\0\0\0\3\0\0\0</span><span class="s2">GNU</span><span class="se">\0</span><span class="s2">I</span><span class="se">\1</span><span class="s2">7</span><span class="se">\3</span><span class="s2">57</span><span class="se">\2</span><span class="s2">04</span><span class="se">\3</span><span class="nv">$\</span><span class="s2">f</span><span class="se">\2</span><span class="s2">21</span><span class="se">\2</span><span class="s2">039x</span><span class="se">\3</span><span class="s2">24</span><span class="se">\2</span><span class="s2">24</span><span class="se">\3</span><span class="s2">23</span><span class="se">\2</span><span class="s2">36S"</span>..., 68, 896<span class="o">)</span> <span class="o">=</span> 68
+newfstatat<span class="o">(</span>3, <span class="s2">""</span>, <span class="o">{</span><span class="nv">st_mode</span><span class="o">=</span>S_IFREG|0755, <span class="nv">st_size</span><span class="o">=</span>2220400, ...<span class="o">}</span>, AT_EMPTY_PATH<span class="o">)</span> <span class="o">=</span> 0
+pread64<span class="o">(</span>3, <span class="s2">"</span><span class="se">\6\0\0\0\4\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">@</span><span class="se">\0\0\0\0\0\0\0</span><span class="s2">"</span>..., 784, 64<span class="o">)</span> <span class="o">=</span> 784
+mmap<span class="o">(</span>NULL, 2264656, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0<span class="o">)</span> <span class="o">=</span> 0x7f8979800000
+mprotect<span class="o">(</span>0x7f8979828000, 2023424, PROT_NONE<span class="o">)</span> <span class="o">=</span> 0
+mmap<span class="o">(</span>0x7f8979828000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000<span class="o">)</span> <span class="o">=</span> 0x7f8979828000
+mmap<span class="o">(</span>0x7f89799bd000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000<span class="o">)</span> <span class="o">=</span> 0x7f89799bd000
+mmap<span class="o">(</span>0x7f8979a16000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x215000<span class="o">)</span> <span class="o">=</span> 0x7f8979a16000
+mmap<span class="o">(</span>0x7f8979a1c000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, <span class="nt">-1</span>, 0<span class="o">)</span> <span class="o">=</span> 0x7f8979a1c000
+close<span class="o">(</span>3<span class="o">)</span>                                <span class="o">=</span> 0
+mmap<span class="o">(</span>NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, <span class="nt">-1</span>, 0<span class="o">)</span> <span class="o">=</span> 0x7f8979a2f000
+arch_prctl<span class="o">(</span>ARCH_SET_FS, 0x7f8979a2f740<span class="o">)</span> <span class="o">=</span> 0
+set_tid_address<span class="o">(</span>0x7f8979a2fa10<span class="o">)</span>         <span class="o">=</span> 74199
+set_robust_list<span class="o">(</span>0x7f8979a2fa20, 24<span class="o">)</span>     <span class="o">=</span> 0
+rseq<span class="o">(</span>0x7f8979a300e0, 0x20, 0, 0x53053053<span class="o">)</span> <span class="o">=</span> 0
+mprotect<span class="o">(</span>0x7f8979a16000, 16384, PROT_READ<span class="o">)</span> <span class="o">=</span> 0
+mprotect<span class="o">(</span>0x62f72bc04000, 4096, PROT_READ<span class="o">)</span> <span class="o">=</span> 0
+mprotect<span class="o">(</span>0x7f8979a83000, 8192, PROT_READ<span class="o">)</span> <span class="o">=</span> 0
+prlimit64<span class="o">(</span>0, RLIMIT_STACK, NULL, <span class="o">{</span><span class="nv">rlim_cur</span><span class="o">=</span>8192<span class="k">*</span>1024, <span class="nv">rlim_max</span><span class="o">=</span>RLIM64_INFINITY<span class="o">})</span> <span class="o">=</span> 0
+munmap<span class="o">(</span>0x7f8979a32000, 90175<span class="o">)</span>           <span class="o">=</span> 0
+rt_sigaction<span class="o">(</span>SIGRT_1, <span class="o">{</span><span class="nv">sa_handler</span><span class="o">=</span>0x7f8979891870, <span class="nv">sa_mask</span><span class="o">=[]</span>, <span class="nv">sa_flags</span><span class="o">=</span>SA_RESTORER|SA_ONSTACK|SA_RESTART|SA_SIGINFO, <span class="nv">sa_restorer</span><span class="o">=</span>0x7f8979842520<span class="o">}</span>, NULL, 8<span class="o">)</span> <span class="o">=</span> 0
+rt_sigprocmask<span class="o">(</span>SIG_UNBLOCK, <span class="o">[</span>RTMIN RT_1], NULL, 8<span class="o">)</span> <span class="o">=</span> 0
+mmap<span class="o">(</span>NULL, 8392704, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, <span class="nt">-1</span>, 0<span class="o">)</span> <span class="o">=</span> 0x7f8978e00000
+mprotect<span class="o">(</span>0x7f8978e01000, 8388608, PROT_READ|PROT_WRITE<span class="o">)</span> <span class="o">=</span> 0
+getrandom<span class="o">(</span><span class="s2">"</span><span class="se">\x</span><span class="s2">f9</span><span class="se">\x</span><span class="s2">22</span><span class="se">\x</span><span class="s2">d5</span><span class="se">\x</span><span class="s2">ff</span><span class="se">\x</span><span class="s2">89</span><span class="se">\x</span><span class="s2">58</span><span class="se">\x</span><span class="s2">ec</span><span class="se">\x</span><span class="s2">64"</span>, 8, GRND_NONBLOCK<span class="o">)</span> <span class="o">=</span> 8
+brk<span class="o">(</span>NULL<span class="o">)</span>                               <span class="o">=</span> 0x62f72cbf9000
+brk<span class="o">(</span>0x62f72cc1a000<span class="o">)</span>                     <span class="o">=</span> 0x62f72cc1a000
+rt_sigprocmask<span class="o">(</span>SIG_BLOCK, ~[], <span class="o">[]</span>, 8<span class="o">)</span>   <span class="o">=</span> 0
+clone3<span class="o">({</span><span class="nv">flags</span><span class="o">=</span>CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, <span class="nv">child_tid</span><span class="o">=</span>0x7f8979600910, <span class="nv">parent_tid</span><span class="o">=</span>0x7f8979600910, <span class="nv">exit_signal</span><span class="o">=</span>0, <span class="nv">stack</span><span class="o">=</span>0x7f8978e00000, <span class="nv">stack_size</span><span class="o">=</span>0x7fff00, <span class="nv">tls</span><span class="o">=</span>0x7f8979600640<span class="o">}</span> <span class="o">=&gt;</span> <span class="o">{</span><span class="nv">parent_tid</span><span class="o">=[</span>74200]<span class="o">}</span>, 88<span class="o">)</span> <span class="o">=</span> 74200
+rt_sigprocmask<span class="o">(</span>SIG_SETMASK, <span class="o">[]</span>, NULL, 8<span class="o">)</span> <span class="o">=</span> 0
+Thread running
+write<span class="o">(</span>1, <span class="s2">"Main program waiting for thread "</span>..., 44Main program waiting <span class="k">for </span>thread to <span class="nb">complete</span>
+<span class="o">)</span> <span class="o">=</span> 44
+write<span class="o">(</span>1, <span class="s2">"Thread joined</span><span class="se">\n</span><span class="s2">"</span>, 14Thread joined
+<span class="o">)</span>         <span class="o">=</span> 14
+exit_group<span class="o">(</span>0<span class="o">)</span>                           <span class="o">=</span> ?
++++ exited with 0 +++
+</code></pre></div></div>
+
+<p>When i was checking the output from <code class="language-plaintext highlighter-rouge">strace</code> i was thinking what kind of crap is this, but believe me i was never more wrong about anything than that</p>
+
+<p>Let’s try to decode each of the line and understand what exactly they are doing:</p>
+<h3 id="system-call-explanations">System Call Explanations</h3>
+
+<ul>
+  <li><strong>execve(“./th”, [”./th”], 0x7ffe8fb66800 /* 75 vars */) = 0</strong>
+    <ul>
+      <li>Executes the program <code class="language-plaintext highlighter-rouge">./th</code> with the environment variables listed in the memory address.</li>
+    </ul>
+  </li>
+  <li><strong>brk(NULL) = 0x5735dff53000</strong>
+    <ul>
+      <li>Adjusts the program break, which is the end of the data segment. Here, it’s setting the initial program break.</li>
+    </ul>
+  </li>
+  <li><strong>arch_prctl(0x3001 /* ARCH_??? */, 0x7ffdf1b1ed40) = -1 EINVAL (Invalid argument)</strong>
+    <ul>
+      <li>Attempt to set architecture-specific thread state, but failed with an invalid argument.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**mmap(NULL, 8192, PROT_READ</td>
+          <td>PROT_WRITE, MAP_PRIVATE</td>
+          <td>MAP_ANONYMOUS, -1, 0) = 0x7d674df61000**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Maps anonymous memory for read/write access, typically used for stack expansion or dynamic memory allocation.</li>
+    </ul>
+  </li>
+  <li><strong>access(“/etc/ld.so.preload”, R_OK) = -1 ENOENT (No such file or directory)</strong>
+    <ul>
+      <li>Checks if the dynamic linker preload configuration file exists, which it doesn’t.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**openat(AT_FDCWD, “/etc/ld.so.cache”, O_RDONLY</td>
+          <td>O_CLOEXEC) = 3**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Opens the dynamic linker cache file to read shared library information.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**newfstatat(3, “”, {st_mode=S_IFREG</td>
+          <td>0644, st_size=90175, …}, AT_EMPTY_PATH) = 0**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Gets file status for the opened cache file descriptor.</li>
+    </ul>
+  </li>
+  <li><strong>mmap(NULL, 90175, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7d674df4a000</strong>
+    <ul>
+      <li>Maps the <code class="language-plaintext highlighter-rouge">/etc/ld.so.cache</code> into memory for reading.</li>
+    </ul>
+  </li>
+  <li><strong>close(3) = 0</strong>
+    <ul>
+      <li>Closes the file descriptor for the linker cache.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**openat(AT_FDCWD, “/lib/x86_64-linux-gnu/libc.so.6”, O_RDONLY</td>
+          <td>O_CLOEXEC) = 3**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Opens the C library shared object file.</li>
+    </ul>
+  </li>
+  <li><strong>read(3, “\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0P\237\2\0\0\0\0\0”…, 832) = 832</strong>
+    <ul>
+      <li>Reads the ELF header from libc to verify and load the library.</li>
+    </ul>
+  </li>
+  <li><strong>pread64(3, …)</strong> (Multiple lines)
+    <ul>
+      <li>Pre-reads different parts of the library for necessary information like program header, section headers, etc.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**newfstatat(3, “”, {st_mode=S_IFREG</td>
+          <td>0755, st_size=2220400, …}, AT_EMPTY_PATH) = 0**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Gets file status for libc.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**mmap(NULL, 2264656, PROT_READ, MAP_PRIVATE</td>
+          <td>MAP_DENYWRITE, 3, 0) = 0x7d674dc00000**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Maps libc into memory.</li>
+    </ul>
+  </li>
+  <li><strong>mprotect(…)</strong> (Multiple lines)
+    <ul>
+      <li>Sets protection on memory regions of libc, ensuring parts are executable or not writable.</li>
+    </ul>
+  </li>
+  <li><strong>close(3) = 0</strong>
+    <ul>
+      <li>Closes the libc file descriptor.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**mmap(NULL, 12288, PROT_READ</td>
+          <td>PROT_WRITE, MAP_PRIVATE</td>
+          <td>MAP_ANONYMOUS, -1, 0) = 0x7d674df47000**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Another anonymous memory mapping, likely for thread-local storage.</li>
+    </ul>
+  </li>
+  <li><strong>arch_prctl(ARCH_SET_FS, 0x7d674df47740) = 0</strong>
+    <ul>
+      <li>Sets the FS segment register for x86-64 to point to thread-local storage.</li>
+    </ul>
+  </li>
+  <li><strong>set_tid_address(…), set_robust_list(…), rseq(…), mprotect(…), prlimit64(…)</strong>
+    <ul>
+      <li>Various system calls for thread management, memory protection, and setting resource limits.</li>
+    </ul>
+  </li>
+  <li><strong>munmap(0x7d674df4a000, 90175) = 0</strong>
+    <ul>
+      <li>Unmaps the memory allocated for the linker cache now that it’s no longer needed.</li>
+    </ul>
+  </li>
+  <li><strong>rt_sigaction(…), rt_sigprocmask(…)</strong>
+    <ul>
+      <li>Sets up signal handlers and manipulates signal masks for thread safety.</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**mmap(NULL, 8392704, PROT_NONE, MAP_PRIVATE</td>
+          <td>MAP_ANONYMOUS</td>
+          <td>MAP_STACK, -1, 0) = 0x7d674d200000**</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>Prepares a new stack for thread creation.</li>
+    </ul>
+  </li>
+  <li><strong>clone3(…) = 70373</strong>
+    <ul>
+      <li>Creates a new thread. The number returned is the thread ID.</li>
+    </ul>
+  </li>
+  <li><strong>exit_group(0)</strong>
+    <ul>
+      <li>The process exits, but since this is <code class="language-plaintext highlighter-rouge">strace</code> output, we see the exit code here before the process ends.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Here the calls to <code class="language-plaintext highlighter-rouge">mmap()</code> and <code class="language-plaintext highlighter-rouge">mprotect()</code> helps doing the set up of the new thread’s stack:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mmap<span class="o">(</span>NULL, 8392704, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, <span class="nt">-1</span>, 0<span class="o">)</span> <span class="o">=</span> 0x7f8978e00000
+mprotect<span class="o">(</span>0x7f8978e01000, 8388608, PROT_READ|PROT_WRITE<span class="o">)</span> <span class="o">=</span> 0
+</code></pre></div></div>
+
+<p>Let’s try to understand it more:</p>
+<h4 id="memory-mapping-for-stack-creation">Memory Mapping for Stack Creation</h4>
+
+<ul>
+  <li><strong>Memory Mapping Call</strong>:
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">8392704</span><span class="p">,</span> <span class="n">PROT_NONE</span><span class="p">,</span> <span class="n">MAP_PRIVATE</span><span class="o">|</span><span class="n">MAP_ANONYMOUS</span><span class="o">|</span><span class="n">MAP_STACK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <ul>
+      <li><strong>Address</strong>: <code class="language-plaintext highlighter-rouge">NULL</code> indicates the kernel should choose an address.</li>
+      <li><strong>Length</strong>: <code class="language-plaintext highlighter-rouge">8392704</code> bytes (approximately 8MB + 4KB).</li>
+      <li><strong>Protection</strong>: <code class="language-plaintext highlighter-rouge">PROT_NONE</code> means no permissions are set initially.</li>
+      <li><strong>Flags</strong>:
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">MAP_PRIVATE</code> creates a copy-on-write mapping, changes do not affect the original file.</li>
+          <li><code class="language-plaintext highlighter-rouge">MAP_ANONYMOUS</code> does not map any file, hence “anonymous”.</li>
+          <li><code class="language-plaintext highlighter-rouge">MAP_STACK</code> (Linux-specific, for informational purposes or compatibility with other OS).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Result</strong>: The system allocates memory at <code class="language-plaintext highlighter-rouge">0x7f8978e00000</code>.</li>
+</ul>
+
+<h4 id="setting-permissions-for-stack-use">Setting Permissions for Stack Use</h4>
+
+<ul>
+  <li><strong>Adjusting Memory Protection</strong>:
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mprotect</span><span class="p">(</span><span class="mh">0x7f8978e01000</span><span class="p">,</span> <span class="mi">8388608</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <ul>
+      <li><strong>Address</strong>: Starts at <code class="language-plaintext highlighter-rouge">0x7f8978e01000</code>, which is 4KB after the start of the mapped region (the guard page).</li>
+      <li><strong>Length</strong>: <code class="language-plaintext highlighter-rouge">8388608</code> bytes, or 8MB, leaving the first 4KB as a guard page.</li>
+      <li><strong>New Protection</strong>: <code class="language-plaintext highlighter-rouge">PROT_READ|PROT_WRITE</code> allows reading and writing in this region.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="purpose-of-the-guard-page">Purpose of the Guard Page</h4>
+
+<ul>
+  <li><strong>Guard Page</strong>:
+    <ul>
+      <li>The initial 4KB (<code class="language-plaintext highlighter-rouge">0x7f8978e00000</code> to <code class="language-plaintext highlighter-rouge">0x7f8978e00fff</code>) remains with <code class="language-plaintext highlighter-rouge">PROT_NONE</code> permissions.</li>
+      <li><strong>Functionality</strong>: This acts as a safety mechanism against stack overflows:
+        <ul>
+          <li>If a program tries to write or read into this area due to a stack overflow, it will trigger a segmentation fault (segfault).</li>
+          <li>This fault can be caught by the operating system or a signal handler, potentially preventing crashes or security breaches by terminating or correcting the process.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="security-and-efficiency-considerations">Security and Efficiency Considerations</h4>
+
+<ul>
+  <li><strong>Security</strong>: By using a guard page, the system can detect and possibly mitigate stack overflow attempts, which could otherwise lead to program crashes or exploitable vulnerabilities.</li>
+  <li><strong>Efficiency</strong>: This approach allows for immediate use of stack space up to 8MB without further memory protection changes, while still providing a safety net.</li>
+</ul>
+
+<p>This setup demonstrates a common practice in memory management for stacks, balancing between performance (immediate stack usage) and security (protection against stack overflows).</p>
+
+<h4 id="signal-management-with-rt_sigprocmask">Signal Management with <code class="language-plaintext highlighter-rouge">rt_sigprocmask</code></h4>
+
+<p>Before and after creating a new thread, the <code class="language-plaintext highlighter-rouge">rt_sigprocmask</code> system call is used to manage signal masks:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rt_sigprocmask</span><span class="p">(</span><span class="n">SIG_BLOCK</span><span class="p">,</span> <span class="o">~</span><span class="p">[],</span> <span class="p">[],</span> <span class="mi">8</span><span class="p">)</span>   <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>Operation</strong>: <code class="language-plaintext highlighter-rouge">SIG_BLOCK</code></li>
+  <li><strong>Mask</strong>: The <code class="language-plaintext highlighter-rouge">~[]</code> syntax indicates blocking all signals (<code class="language-plaintext highlighter-rouge">~</code> inverts the empty set).</li>
+  <li><strong>Result</strong>: No signals are currently blocked (<code class="language-plaintext highlighter-rouge">[]</code>), but all signals are blocked during the operation of <code class="language-plaintext highlighter-rouge">clone3</code>.</li>
+  <li><strong>Purpose</strong>: This blocks all signals to prevent any signal from interrupting the thread creation process, which could lead to race conditions or inconsistent thread state.</li>
+</ul>
+
+<p>After the thread is created:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rt_sigprocmask</span><span class="p">(</span><span class="n">SIG_SETMASK</span><span class="p">,</span> <span class="p">[],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>Operation</strong>: <code class="language-plaintext highlighter-rouge">SIG_SETMASK</code></li>
+  <li><strong>Mask</strong>: <code class="language-plaintext highlighter-rouge">[]</code> (Empty set), which means no signals are blocked.</li>
+  <li><strong>Result</strong>: Restores the signal mask to its original state, allowing signals to be processed again.</li>
+</ul>
+
+<h4 id="thread-creation-with-clone3">Thread Creation with <code class="language-plaintext highlighter-rouge">clone3</code></h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">clone3</code> system call is used to create a new thread:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">clone3</span><span class="p">({</span><span class="n">flags</span><span class="o">=</span><span class="n">CLONE_VM</span><span class="o">|</span><span class="n">CLONE_FS</span><span class="o">|</span><span class="n">CLONE_FILES</span><span class="o">|</span><span class="n">CLONE_SIGHAND</span><span class="o">|</span><span class="n">CLONE_THREAD</span><span class="o">|</span><span class="n">CLONE_SYSVSEM</span><span class="o">|</span><span class="n">CLONE_SETTLS</span><span class="o">|</span><span class="n">CLONE_PARENT_SETTID</span><span class="o">|</span><span class="n">CLONE_CHILD_CLEARTID</span><span class="p">,</span> <span class="n">child_tid</span><span class="o">=</span><span class="mh">0x7f8979600910</span><span class="p">,</span> <span class="n">parent_tid</span><span class="o">=</span><span class="mh">0x7f8979600910</span><span class="p">,</span> <span class="n">exit_signal</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="mh">0x7f8978e00000</span><span class="p">,</span> <span class="n">stack_size</span><span class="o">=</span><span class="mh">0x7fff00</span><span class="p">,</span> <span class="n">tls</span><span class="o">=</span><span class="mh">0x7f8979600640</span><span class="p">}</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="n">parent_tid</span><span class="o">=</span><span class="p">[</span><span class="mi">74200</span><span class="p">]},</span> <span class="mi">88</span><span class="p">)</span> <span class="o">=</span> <span class="mi">74200</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Flags</strong>:
+    <ul>
+      <li><strong>CLONE_VM</strong>: The new thread shares the same memory space as the parent.</li>
+      <li><strong>CLONE_FS</strong>: The thread shares the file system information with the parent.</li>
+      <li><strong>CLONE_FILES</strong>: Sharing of file descriptors.</li>
+      <li><strong>CLONE_SIGHAND</strong>: Signal handlers are shared, allowing the new thread to handle signals in the same way as the parent.</li>
+      <li><strong>CLONE_THREAD</strong>: Marks the new task as a thread within the same thread group, sharing the same process ID (PID) but with a unique thread ID (TID).</li>
+      <li><strong>CLONE_SYSVSEM</strong>: Shares semaphore undo operations between threads.</li>
+      <li><strong>CLONE_SETTLS</strong>: Sets the thread-local storage for the new thread.</li>
+      <li><strong>CLONE_PARENT_SETTID</strong>: Set the parent’s TID to the provided address.</li>
+      <li><strong>CLONE_CHILD_CLEARTID</strong>: The kernel will clear the child thread ID at this address when the thread exits.</li>
+    </ul>
+  </li>
+  <li><strong>Parameters</strong>:
+    <ul>
+      <li><strong>child_tid</strong>: Address where the child thread’s TID will be stored.</li>
+      <li><strong>parent_tid</strong>: Address where the parent thread’s TID is stored for the new thread.</li>
+      <li><strong>exit_signal</strong>: Set to 0 here, meaning no signal is sent to the parent when the thread exits (used for process group leaders).</li>
+      <li><strong>stack</strong>: Points to the memory address where the stack for the new thread begins, which was set by the <code class="language-plaintext highlighter-rouge">mmap</code> call you provided previously.</li>
+      <li><strong>stack_size</strong>: Size of the thread’s stack, <code class="language-plaintext highlighter-rouge">0x7fff00</code> bytes.</li>
+      <li><strong>tls</strong>: Address for thread-local storage.</li>
+    </ul>
+  </li>
+  <li><strong>Return Value</strong>: <code class="language-plaintext highlighter-rouge">74200</code>, which is the thread ID of the newly created thread.</li>
+</ul>
+
+<p>This help ensures that the new thread is properly integrated into the parent’s environment, sharing necessary resources while having its own stack and thread-specific storage. The use of <code class="language-plaintext highlighter-rouge">clone3</code> over older variants like <code class="language-plaintext highlighter-rouge">clone</code> allows for more precise control over the creation of threads with modern flags and structures.</p>
+
+<h2 id="process-creation">Process Creation</h2>
+
+<p>Let’s take below code as the example:</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stddef.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"fork"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="some-of-the-key-steps-involved-here">Some of the Key Steps Involved here</h3>
+
+<p><strong>Program Execution</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">execve</span><span class="p">(</span><span class="s">"./process-creation"</span><span class="p">,</span> <span class="p">[</span><span class="s">"./process-creation"</span><span class="p">],</span> <span class="mh">0x7ffc208c3b00</span> <span class="cm">/* 75 vars */</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>execve</strong>: This system call replaces the current process image with a new process image. It’s the initiation of the new program’s execution.</li>
+</ul>
+
+<p><strong>Creation of Child Process</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">clone</span><span class="p">(</span><span class="n">child_stack</span><span class="o">=</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">CLONE_CHILD_CLEARTID</span><span class="o">|</span><span class="n">CLONE_CHILD_SETTID</span><span class="o">|</span><span class="n">SIGCHLD</span><span class="p">,</span> <span class="n">child_tidptr</span><span class="o">=</span><span class="mh">0x7e349f3f4a10</span><span class="p">)</span> <span class="o">=</span> <span class="mi">76678</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>clone</strong>: This system call is used for creating a new process or thread. For process creation:
+    <ul>
+      <li><strong>child_stack=NULL</strong> indicates the child process will use the same stack region but in its own address space.</li>
+      <li><strong>Flags</strong> like <code class="language-plaintext highlighter-rouge">CLONE_CHILD_CLEARTID</code> and <code class="language-plaintext highlighter-rouge">CLONE_CHILD_SETTID</code> set up thread ID handling, while <code class="language-plaintext highlighter-rouge">SIGCHLD</code> ensures the parent gets notified upon child’s state changes.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Parent Waiting for Child</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wait4</span><span class="p">(</span><span class="mi">76678</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span>             <span class="o">=</span> <span class="mi">76678</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>wait4</strong>: This call allows the parent to wait for the child process to change state or terminate, ensuring synchronization or cleanup.</li>
+</ul>
+
+<p><strong>Signal Handling</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">---</span> <span class="n">SIGCHLD</span> <span class="p">{</span><span class="n">si_signo</span><span class="o">=</span><span class="n">SIGCHLD</span><span class="p">,</span> <span class="n">si_code</span><span class="o">=</span><span class="n">CLD_EXITED</span><span class="p">,</span> <span class="n">si_pid</span><span class="o">=</span><span class="mi">76678</span><span class="p">,</span> <span class="n">si_uid</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">si_status</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">si_utime</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">si_stime</span><span class="o">=</span><span class="mi">0</span><span class="p">}</span> <span class="o">---</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>SIGCHLD</strong>: The kernel sends this signal to the parent when the child process terminates or stops, allowing the parent to handle or react to this event.</li>
+</ul>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/mohitmishra786/exploring-os/edit/gh-pages/extras/Thread-Vs-Process-Creation.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

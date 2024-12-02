@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Memory Mapping Segment"
+permalink: /extras/memory-mapping-segment-and-heap-grow-until-they-meet.html
+---
+
 ## Does memory mapping segment and heap grow until they meet each other?
 
 >This question can come to anyone's mind who is trying to understand the memory structure.

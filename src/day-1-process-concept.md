@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Day 1: Process Concept"
+permalink: /src/day-1-process-concept.html
+---
+
 # Day 1: Deep Dive into Process Concepts in Operating Systems
 
 ## Table of Contents

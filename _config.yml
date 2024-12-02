@@ -1,0 +1,23 @@
+title: Exploring Operating Systems
+description: 69 Days of Deep Dive Implementation in C
+baseurl: "/exploring-os"
+url: "https://mohitmishra786.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "post"
+  - scope:
+      path: "src"
+    values:
+      layout: "post"
+  - scope:
+      path: "extras"
+    values:
+      layout: "post"

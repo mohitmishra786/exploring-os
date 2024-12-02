@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Day 3: Process Creation | Exploring Operating Systems</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Day 3: Process Creation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="69 Days of Deep Dive Implementation in C" />
+<meta property="og:description" content="69 Days of Deep Dive Implementation in C" />
+<link rel="canonical" href="http://localhost:4000/exploring-os/src/day-3-process-creation.html" />
+<meta property="og:url" content="http://localhost:4000/exploring-os/src/day-3-process-creation.html" />
+<meta property="og:site_name" content="Exploring Operating Systems" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Day 3: Process Creation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"69 Days of Deep Dive Implementation in C","headline":"Day 3: Process Creation","url":"http://localhost:4000/exploring-os/src/day-3-process-creation.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/exploring-os/assets/css/style.css?v=0035f7ba76779f6ca67683c9ee1c6858c0cc493d">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/exploring-os/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/exploring-os/">Exploring Operating Systems</a></h1>
+      
+
+      <h1 id="day-3-process-creation-mechanisms---a-deep-dive">Day 3: Process Creation Mechanisms - A Deep Dive</h1>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li>Introduction</li>
+  <li>Process Creation Overview
+    <ul>
+      <li>System Calls Involved</li>
+      <li>Process Creation Steps</li>
+    </ul>
+  </li>
+  <li>Fork System Call
+    <ul>
+      <li>Detailed Explanation</li>
+      <li>Code Example</li>
+    </ul>
+  </li>
+  <li>Exec System Call
+    <ul>
+      <li>Detailed Explanation</li>
+      <li>Code Example</li>
+    </ul>
+  </li>
+  <li>Process Creation in Linux Kernel
+    <ul>
+      <li>Kernel Functions</li>
+      <li>Data Structures</li>
+    </ul>
+  </li>
+  <li>Practical Implementation
+    <ul>
+      <li>Combining Fork and Exec</li>
+      <li>Testing Scenarios</li>
+    </ul>
+  </li>
+  <li>Performance Considerations</li>
+  <li>Debugging Process Creation</li>
+  <li>Best Practices</li>
+  <li>References</li>
+  <li>Further Reading</li>
+  <li>Conclusion</li>
+</ol>
+
+<h2 id="1-introduction">1. Introduction</h2>
+
+<p>Process creation is a fundamental operation in operating systems, enabling the execution of new programs and the management of system resources. This article provides an in-depth exploration of process creation mechanisms, focusing on both theoretical concepts and practical implementation details.</p>
+
+<h2 id="2-process-creation-overview">2. Process Creation Overview</h2>
+
+<p><a href="https://mermaid.live/edit#pako:eNqdlE2P2jAQhv-K5VMrseo9h5VoSFdRS6AJCLXi4joDROuvOna7aLX_vTZOQiABrepDYuyHeWcmr_2KqSwBR7iG3xYEhVlF9prwrUBuKKJNRStFhEHrGjQidXgXilAYMl9BC2CeamY3uIIeoLQsBFxqSaGuz4tDfg5c6qOHm9mcCLIHDsIM4XThwfTTAhX2V32sDbhqAuZzf3h8DMlFaCf184ePqDgxKCaMBSyTBpD849JrySzZoMIQ09QSll2kkE6EpoxJ6rbRMv4ckLDTE3M7KAdSHq9CdGVHXSdiDS5WeZ1Mj8yT6exHP6PwZFKqFqvEHsVHyhrAjy5AL60CGFDTSp_ZYQ_ydZal2VNf9azsB2Hm1PbcW6k2542LetNF1BKevqSGqptpuhpR9SNdPPQK8cqx5IrBNTfW6g15BrRWt9TvtdoPYDWgVcUBfbfOc5aj5EVVuv1m95SXGoAr89_KotHoJqPWhheg77N2Doq5Q9qZL-XuZN2w-TdJSpTBXw-fb4mh1cPuCW9bMtaKHGrL4dJ7450YWu9G1ZV5X9WrJJ-n2XSVzO6e6y_uY_k0pdUuxRvlxgyIsKpzH55gDpqTqnT36qv_0xabg7uttjhy0xJ2xDKzxVvx5lBijSyOguLIaAsTrKXdH3C0I85iE2xV6bJrLuVu1d1zP6Vsf7_9A_Bt168"><img src="https://mermaid.ink/img/pako:eNqdlE2P2jAQhv-K5VMrseo9h5VoSFdRS6AJCLXi4joDROuvOna7aLX_vTZOQiABrepDYuyHeWcmr_2KqSwBR7iG3xYEhVlF9prwrUBuKKJNRStFhEHrGjQidXgXilAYMl9BC2CeamY3uIIeoLQsBFxqSaGuz4tDfg5c6qOHm9mcCLIHDsIM4XThwfTTAhX2V32sDbhqAuZzf3h8DMlFaCf184ePqDgxKCaMBSyTBpD849JrySzZoMIQ09QSll2kkE6EpoxJ6rbRMv4ckLDTE3M7KAdSHq9CdGVHXSdiDS5WeZ1Mj8yT6exHP6PwZFKqFqvEHsVHyhrAjy5AL60CGFDTSp_ZYQ_ydZal2VNf9azsB2Hm1PbcW6k2542LetNF1BKevqSGqptpuhpR9SNdPPQK8cqx5IrBNTfW6g15BrRWt9TvtdoPYDWgVcUBfbfOc5aj5EVVuv1m95SXGoAr89_KotHoJqPWhheg77N2Doq5Q9qZL-XuZN2w-TdJSpTBXw-fb4mh1cPuCW9bMtaKHGrL4dJ7450YWu9G1ZV5X9WrJJ-n2XSVzO6e6y_uY_k0pdUuxRvlxgyIsKpzH55gDpqTqnT36qv_0xabg7uttjhy0xJ2xDKzxVvx5lBijSyOguLIaAsTrKXdH3C0I85iE2xV6bJrLuVu1d1zP6Vsf7_9A_Bt168?type=png" alt="Process Creation Flow" /></a></p>
+
+<h3 id="21-system-calls-involved">2.1 System Calls Involved</h3>
+
+<p>The primary system calls involved in process creation are:</p>
+
+<ol>
+  <li><strong>fork()</strong>
+    <ul>
+      <li>Creates a new process by duplicating the calling process</li>
+      <li>Returns 0 in the child process and the child’s PID in the parent process</li>
+      <li>Kernel function: <code class="language-plaintext highlighter-rouge">do_fork()</code></li>
+    </ul>
+  </li>
+  <li><strong>exec()</strong>
+    <ul>
+      <li>Replaces the current process image with a new program</li>
+      <li>Multiple variants: <code class="language-plaintext highlighter-rouge">execve()</code>, <code class="language-plaintext highlighter-rouge">execl()</code>, <code class="language-plaintext highlighter-rouge">execle()</code>, <code class="language-plaintext highlighter-rouge">execv()</code>, <code class="language-plaintext highlighter-rouge">execvp()</code>, <code class="language-plaintext highlighter-rouge">execvpe()</code></li>
+      <li>Kernel function: <code class="language-plaintext highlighter-rouge">do_execve()</code></li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="22-process-creation-steps">2.2 Process Creation Steps</h3>
+
+<ol>
+  <li><strong>Forking</strong>
+    <ul>
+      <li>Duplicate the calling process</li>
+      <li>Create a new process control block (PCB)</li>
+      <li>Allocate memory for the new process</li>
+      <li>Copy the parent’s memory space to the child</li>
+    </ul>
+  </li>
+  <li><strong>Executing</strong>
+    <ul>
+      <li>Replace the child’s memory space with the new program</li>
+      <li>Load the program into memory</li>
+      <li>Set up the execution environment</li>
+      <li>Transfer control to the new program</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="3-fork-system-call">3. Fork System Call</h2>
+
+<h3 id="31-detailed-explanation">3.1 Detailed Explanation</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">fork()</code> system call creates a new process by duplicating the calling process. The new process, known as the child process, is an exact copy of the parent process, including its memory, file descriptors, and signal handlers. The only difference is the return value of <code class="language-plaintext highlighter-rouge">fork()</code>, which is 0 in the child process and the child’s PID in the parent process.</p>
+
+<h3 id="32-code-example">3.2 Code Example</h3>
+
+<p>Here’s a simple example demonstrating the use of <code class="language-plaintext highlighter-rouge">fork()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+
+    <span class="c1">// Create a new process</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Fork failed</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Fork failed!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Child process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: Parent PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getppid</span><span class="p">());</span>
+        <span class="c1">// Child process can execute a new program using exec()</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Parent process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+        <span class="c1">// Wait for the child process to complete</span>
+        <span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child has terminated</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To compile and run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc fork_example.c <span class="nt">-o</span> fork_example
+./fork_example
+</code></pre></div></div>
+
+<h2 id="4-exec-system-call">4. Exec System Call</h2>
+
+<h3 id="41-detailed-explanation">4.1 Detailed Explanation</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">exec()</code> system call replaces the current process image with a new program. This is typically done in the child process after a <code class="language-plaintext highlighter-rouge">fork()</code> to execute a different program. The <code class="language-plaintext highlighter-rouge">exec()</code> family of functions includes:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">execve()</code>: Executes a program specified by a pathname</li>
+  <li><code class="language-plaintext highlighter-rouge">execl()</code>: Executes a program with a list of arguments</li>
+  <li><code class="language-plaintext highlighter-rouge">execle()</code>: Executes a program with a list of arguments and environment variables</li>
+  <li><code class="language-plaintext highlighter-rouge">execv()</code>: Executes a program with an array of arguments</li>
+  <li><code class="language-plaintext highlighter-rouge">execvp()</code>: Executes a program with a list of arguments, searching for the program in the PATH</li>
+  <li><code class="language-plaintext highlighter-rouge">execvpe()</code>: Executes a program with a list of arguments and environment variables, searching for the program in the PATH</li>
+</ul>
+
+<h3 id="42-code-example">4.2 Code Example</h3>
+
+<p>Here’s a simple example demonstrating the use of <code class="language-plaintext highlighter-rouge">exec()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+
+    <span class="c1">// Create a new process</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Fork failed</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Fork failed!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Child process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: Parent PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getppid</span><span class="p">());</span>
+        <span class="c1">// Execute a new program</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">args</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"-l"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+        <span class="n">execvp</span><span class="p">(</span><span class="s">"ls"</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+        <span class="c1">// If execvp returns, it must have failed</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"execvp"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Parent process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+        <span class="c1">// Wait for the child process to complete</span>
+        <span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child has terminated</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To compile and run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc exec_example.c <span class="nt">-o</span> exec_example
+./exec_example
+</code></pre></div></div>
+
+<h2 id="5-process-creation-in-linux-kernel">5. Process Creation in Linux Kernel</h2>
+
+<h3 id="51-kernel-functions">5.1 Kernel Functions</h3>
+
+<p>The Linux kernel uses several functions to manage process creation:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">do_fork()</code>: Creates a new process</li>
+  <li><code class="language-plaintext highlighter-rouge">copy_process()</code>: Copies the parent process’s state to the child</li>
+  <li><code class="language-plaintext highlighter-rouge">wake_up_new_task()</code>: Adds the new process to the run queue</li>
+  <li><code class="language-plaintext highlighter-rouge">do_execve()</code>: Loads a new program into the current process</li>
+</ul>
+
+<h3 id="52-data-structures">5.2 Data Structures</h3>
+
+<p>The Linux kernel uses the <code class="language-plaintext highlighter-rouge">task_struct</code> structure to manage process state:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">task_struct</span> <span class="p">{</span>
+    <span class="k">volatile</span> <span class="kt">long</span> <span class="n">state</span><span class="p">;</span>    <span class="cm">/* -1 unrunnable, 0 runnable, &gt;0 stopped */</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">stack</span><span class="p">;</span>
+    <span class="n">atomic_t</span> <span class="n">usage</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ptrace</span><span class="p">;</span>
+    
+    <span class="kt">int</span> <span class="n">prio</span><span class="p">,</span> <span class="n">static_prio</span><span class="p">,</span> <span class="n">normal_prio</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">list_head</span> <span class="n">tasks</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">mm_struct</span> <span class="o">*</span><span class="n">mm</span><span class="p">,</span> <span class="o">*</span><span class="n">active_mm</span><span class="p">;</span>
+    
+    <span class="cm">/* ... many more fields ... */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="6-practical-implementation">6. Practical Implementation</h2>
+
+<h3 id="61-combining-fork-and-exec">6.1 Combining Fork and Exec</h3>
+
+<p>Here’s a combined example demonstrating the use of <code class="language-plaintext highlighter-rouge">fork()</code> and <code class="language-plaintext highlighter-rouge">exec()</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+
+    <span class="c1">// Create a new process</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Fork failed</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Fork failed!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Child process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Child process: Parent PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getppid</span><span class="p">());</span>
+        <span class="c1">// Execute a new program</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">args</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"-l"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+        <span class="n">execvp</span><span class="p">(</span><span class="s">"ls"</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+        <span class="c1">// If execvp returns, it must have failed</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"execvp"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Parent process</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child PID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+        <span class="c1">// Wait for the child process to complete</span>
+        <span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Parent process: Child has terminated</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To compile and run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc fork_exec_example.c <span class="nt">-o</span> fork_exec_example
+./fork_exec_example
+</code></pre></div></div>
+
+<h3 id="62-testing-scenarios">6.2 Testing Scenarios</h3>
+
+<ol>
+  <li><strong>Basic Fork and Exec</strong>
+    <ul>
+      <li>Create a child process using <code class="language-plaintext highlighter-rouge">fork()</code></li>
+      <li>Execute a simple command in the child process using <code class="language-plaintext highlighter-rouge">exec()</code></li>
+      <li>Wait for the child process to complete in the parent process</li>
+    </ul>
+  </li>
+  <li><strong>Error Handling</strong>
+    <ul>
+      <li>Handle <code class="language-plaintext highlighter-rouge">fork()</code> failures</li>
+      <li>Handle <code class="language-plaintext highlighter-rouge">exec()</code> failures</li>
+      <li>Ensure proper cleanup</li>
+    </ul>
+  </li>
+  <li><strong>Resource Management</strong>
+    <ul>
+      <li>Monitor resource usage</li>
+      <li>Clean up resources after process termination</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="7-performance-considerations">7. Performance Considerations</h2>
+
+<h3 id="71-context-switching-overhead">7.1 Context Switching Overhead</h3>
+
+<p>Context switching between processes incurs significant overhead:</p>
+
+<ol>
+  <li><strong>Direct Costs</strong>
+    <ul>
+      <li>CPU Cache Invalidation: 100-1000 cycles</li>
+      <li>TLB Flush: 100-1000 cycles</li>
+      <li>Pipeline Flush: 10-100 cycles</li>
+      <li>Register Save/Restore: 50-200 cycles</li>
+    </ul>
+  </li>
+  <li><strong>Indirect Costs</strong>
+    <ul>
+      <li>Cache Cold Start: Up to 1000 cycles</li>
+      <li>Memory Access Patterns: 100-500 cycles penalty</li>
+      <li>Branch Prediction Reset: 10-50 cycles</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="72-memory-impact">7.2 Memory Impact</h3>
+
+<p>Process creation affects memory in several ways:</p>
+
+<ol>
+  <li><strong>Cache Behavior</strong>
+    <ul>
+      <li>L1 Cache: 32KB, 4-cycle latency</li>
+      <li>L2 Cache: 256KB, 12-cycle latency</li>
+      <li>L3 Cache: 8MB, 40-cycle latency</li>
+      <li>Main Memory: &gt;100-cycle latency</li>
+    </ul>
+  </li>
+  <li><strong>TLB Impact</strong>
+    <ul>
+      <li>Entry Capacity: 1024-4096 entries</li>
+      <li>Miss Penalty: 100-1000 cycles</li>
+      <li>Flush Cost: 500-2000 cycles</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="8-debugging-process-creation">8. Debugging Process Creation</h2>
+
+<h3 id="81-tools-and-techniques">8.1 Tools and Techniques</h3>
+
+<p>Here’s a comprehensive process creation debugger:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;ctype.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define MAX_PATH 1024
+#define MAX_LINE 256
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">state</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">vm_size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">vm_rss</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">threads</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="n">MAX_LINE</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">ProcessInfo</span><span class="p">;</span>
+
+<span class="c1">// Function to read process information from /proc</span>
+<span class="kt">void</span> <span class="nf">read_process_info</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="n">ProcessInfo</span><span class="o">*</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">MAX_LINE</span><span class="p">];</span>
+    <span class="kt">FILE</span><span class="o">*</span> <span class="n">fp</span><span class="p">;</span>
+
+    <span class="c1">// Read status file</span>
+    <span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s">"/proc/%d/status"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">"r"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fp</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">line</span><span class="p">),</span> <span class="n">fp</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"State:"</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">info</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"VmSize:"</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sscanf</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"VmSize: %lu"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">vm_size</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"VmRSS:"</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sscanf</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"VmRSS: %lu"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">vm_rss</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"Threads:"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sscanf</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"Threads: %lu"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">threads</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"Name:"</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sscanf</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">"Name: %s"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to print process state information</span>
+<span class="kt">void</span> <span class="nf">print_process_info</span><span class="p">(</span><span class="n">ProcessInfo</span><span class="o">*</span> <span class="n">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"PID: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Name: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"State: %c ("</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">state</span><span class="p">);</span>
+    
+    <span class="k">switch</span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">state</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="sc">'R'</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Running"</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="sc">'S'</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Sleeping"</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="sc">'D'</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Disk Sleep"</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="sc">'Z'</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Zombie"</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="sc">'T'</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Stopped"</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default:</span> <span class="n">printf</span><span class="p">(</span><span class="s">"Unknown"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">")</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Virtual Memory: %lu KB</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">vm_size</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"RSS: %lu KB</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">vm_rss</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Threads: %lu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">threads</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"------------------------</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to scan all processes</span>
+<span class="kt">void</span> <span class="nf">scan_processes</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">DIR</span><span class="o">*</span> <span class="n">proc_dir</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">dirent</span><span class="o">*</span> <span class="n">entry</span><span class="p">;</span>
+    <span class="n">ProcessInfo</span> <span class="n">info</span><span class="p">;</span>
+
+    <span class="n">proc_dir</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="s">"/proc"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">proc_dir</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"Cannot open /proc"</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Scanning all processes...</span><span class="se">\n\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">((</span><span class="n">entry</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">proc_dir</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="c1">// Check if the entry is a process (directory with numeric name)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">d_type</span> <span class="o">==</span> <span class="n">DT_DIR</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">char</span><span class="o">*</span> <span class="n">endptr</span><span class="p">;</span>
+            <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">strtol</span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">endptr</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">endptr</span> <span class="o">==</span> <span class="sc">'\0'</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// Valid PID</span>
+                <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ProcessInfo</span><span class="p">));</span>
+                <span class="n">read_process_info</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">);</span>
+                <span class="n">print_process_info</span><span class="p">(</span><span class="o">&amp;</span><span class="n">info</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">closedir</span><span class="p">(</span><span class="n">proc_dir</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">scan_processes</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To compile and run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc process_debugger.c <span class="nt">-o</span> process_debugger
+./process_debugger
+</code></pre></div></div>
+
+<h2 id="9-best-practices">9. Best Practices</h2>
+
+<ol>
+  <li><strong>State Transition Management</strong>
+    <ul>
+      <li>Always verify state transitions</li>
+      <li>Implement proper error handling</li>
+      <li>Log state changes for debugging</li>
+      <li>Use atomic operations for state updates</li>
+    </ul>
+  </li>
+  <li><strong>Resource Management</strong>
+    <ul>
+      <li>Clean up resources in TERMINATED state</li>
+      <li>Implement proper signal handling</li>
+      <li>Handle zombie processes</li>
+      <li>Monitor resource usage</li>
+    </ul>
+  </li>
+  <li><strong>Performance Optimization</strong>
+    <ul>
+      <li>Minimize context switches</li>
+      <li>Optimize process creation</li>
+      <li>Use appropriate scheduling policies</li>
+      <li>Monitor system load</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="10-references">10. References</h2>
+
+<ol>
+  <li>Tanenbaum, A. S., &amp; Bos, H. (2014). Modern Operating Systems (4th ed.)</li>
+  <li>Love, R. (2010). Linux Kernel Development (3rd ed.)</li>
+  <li>Bovet, D. P., &amp; Cesati, M. (2005). Understanding the Linux Kernel</li>
+  <li>McKusick, M. K., &amp; Neville-Neil, G. V. (2004). The Design and Implementation of the FreeBSD Operating System</li>
+</ol>
+
+<h2 id="11-further-reading">11. Further Reading</h2>
+
+<ol>
+  <li><a href="https://www.kernel.org/doc/html/latest/admin-guide/pm/">Linux Kernel Documentation - Process Management</a></li>
+  <li><a href="https://developer.ibm.com/technologies/linux/articles/l-process-states/">IBM Developer - Process States</a></li>
+  <li><a href="http://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three Easy Pieces - Process Chapter</a></li>
+</ol>
+
+<h2 id="12-conclusion">12. Conclusion</h2>
+
+<p>Process creation mechanisms are essential for the execution of new programs and the management of system resources. Understanding these concepts is crucial for system programmers and OS developers. The implementation details and performance considerations discussed here provide a solid foundation for working with process creation systems.</p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/mohitmishra786/exploring-os/edit/gh-pages/src/day-3-process-creation.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

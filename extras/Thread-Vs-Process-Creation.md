@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Thread vs Process Creation"
+permalink: /extras/Thread-Vs-Process-Creation.html
+---
+
 ## Thread vs Process Creation
 
 Let's first take a look into thread creation.

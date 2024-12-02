@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Can we access files in a directory without x-permission? | Exploring Operating Systems</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Can we access files in a directory without x-permission?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="69 Days of Deep Dive Implementation in C" />
+<meta property="og:description" content="69 Days of Deep Dive Implementation in C" />
+<link rel="canonical" href="http://localhost:4000/exploring-os/extras/accessing-directory-without-x-permission.html" />
+<meta property="og:url" content="http://localhost:4000/exploring-os/extras/accessing-directory-without-x-permission.html" />
+<meta property="og:site_name" content="Exploring Operating Systems" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Can we access files in a directory without x-permission?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"69 Days of Deep Dive Implementation in C","headline":"Can we access files in a directory without x-permission?","url":"http://localhost:4000/exploring-os/extras/accessing-directory-without-x-permission.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/exploring-os/assets/css/style.css?v=0035f7ba76779f6ca67683c9ee1c6858c0cc493d">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/exploring-os/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/exploring-os/">Exploring Operating Systems</a></h1>
+      
+
+      <h2 id="can-we-access-files-in-a-directory-without-x-permission">Can we access files in a directory without x-permission?</h2>
+
+<p>We can have multiple questions coming in our minds:</p>
+<ol>
+  <li>Does lacking execute permission (x-rights) on a directory mean a user can’t access items inside it, even if they have specific permissions for those items?</li>
+  <li>Or can users still access items directly but not list the directory contents?</li>
+  <li>Essentially, how secure is a directory from unauthorized access if a user lacks execute permission?</li>
+</ol>
+
+<p>The execute bit on a directory, often referred to as the “search” bit, is crucial for accessing the inodes of files within that directory. If you aim to access a file like <code class="language-plaintext highlighter-rouge">/do/i/love/you.txt</code>, you must have execute (search) permissions for each directory in the path from the root to <code class="language-plaintext highlighter-rouge">you.txt</code>.</p>
+
+<p>Here’s how it works:</p>
+
+<ul>
+  <li>
+    <p><strong>Read Permission</strong>: This allows you to list the contents of a directory, but not necessarily access the files within, unless you also have execute permissions on that directory.</p>
+  </li>
+  <li>
+    <p><strong>Write Permission</strong>: This is required for adding, deleting, or renaming files within a directory, but not for modifying the files themselves.</p>
+  </li>
+  <li>
+    <p><strong>Execute/Search Permission</strong>: This permission does not mean you can “execute” the directory like you would a program. Instead, it’s essential for changing your current working directory to that folder (<code class="language-plaintext highlighter-rouge">cd</code> command) and for accessing any file or subdirectory’s inode information. Without this permission on all ancestor directories, you can’t locate or interact with a file’s inode, which is necessary to perform actions like reading a file. Hence, execute permission on directories is often called “search” permission because it enables you to search through directories to reach files or subdirectories.</p>
+  </li>
+</ul>
+
+<p>Therefore, a directory without execute permission for a user essentially blocks that user from accessing any file or subdirectory within, even if they have specific permissions on the files, because they can’t navigate through or “see” the directory structure to get to the inodes of the files. This makes directories quite secure from unauthorized access when the execute/search permission is withheld.</p>
+
+<p>You can read more here:</p>
+<ol>
+  <li><a href="https://superuser.com/questions/168578/why-must-a-folder-be-executable">Why must a folder be executable</a></li>
+  <li><a href="https://unix.stackexchange.com/questions/21251/execute-vs-read-bit-how-do-directory-permissions-in-linux-work">Execute vs Read bit. How do directory permissions in Linux work?</a></li>
+  <li><a href="https://wpollock.com/AUnix1/FilePermissions.htm">Unix File Permissions</a></li>
+</ol>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/mohitmishra786/exploring-os/edit/gh-pages/extras/accessing-directory-without-x-permission.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

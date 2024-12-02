@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Day 1: Process Concept | Exploring Operating Systems</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Day 1: Process Concept" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="69 Days of Deep Dive Implementation in C" />
+<meta property="og:description" content="69 Days of Deep Dive Implementation in C" />
+<link rel="canonical" href="http://localhost:4000/exploring-os/src/day-1-process-concept.html" />
+<meta property="og:url" content="http://localhost:4000/exploring-os/src/day-1-process-concept.html" />
+<meta property="og:site_name" content="Exploring Operating Systems" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Day 1: Process Concept" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"69 Days of Deep Dive Implementation in C","headline":"Day 1: Process Concept","url":"http://localhost:4000/exploring-os/src/day-1-process-concept.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/exploring-os/assets/css/style.css?v=0035f7ba76779f6ca67683c9ee1c6858c0cc493d">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/exploring-os/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/exploring-os/">Exploring Operating Systems</a></h1>
+      
+
+      <h1 id="day-1-deep-dive-into-process-concepts-in-operating-systems">Day 1: Deep Dive into Process Concepts in Operating Systems</h1>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#1-introduction">Introduction</a></li>
+  <li><a href="#2-what-is-a-process">What is a Process?</a></li>
+  <li><a href="#3-process-definition-and-components">Process Definition and Components</a></li>
+  <li><a href="#4-process-memory-layout">Process Memory Layout</a></li>
+  <li><a href="#5-process-states">Process States</a></li>
+  <li><a href="#6-process-control-block-pcb">Process Control Block (PCB)</a></li>
+  <li><a href="#7-practical-implementation">Practical Implementation</a></li>
+  <li><a href="#8-code-example-process-information-demonstration">Code Example</a></li>
+  <li><a href="#9-references-and-further-reading">References and Further Reading</a></li>
+  <li><a href="#10-conclusion">Conclusion</a></li>
+  <li><a href="#11-learning-pathway">Learning Pathway</a></li>
+</ol>
+
+<h2 id="1-introduction">1. Introduction</h2>
+<p>In the intricate world of operating systems, understanding processes forms the fundamental building block of computational execution. This comprehensive exploration will unravel the complexities of processes, providing you with a deep, low-level understanding of how modern operating systems manage computational tasks.</p>
+
+<h2 id="2-what-is-a-process">2. What is a Process?</h2>
+<p>A process is a dynamic instance of a computer program during execution. Unlike a static program stored on disk, a process represents an active entity with its own resources, memory space, and execution context. It’s essentially a program in action, containing not just the code but all the computational resources required for its execution.</p>
+
+<h3 id="key-characteristics-of-processes">Key Characteristics of Processes:</h3>
+<ul>
+  <li><strong>Dynamic Execution</strong>: Active program with ongoing computational state</li>
+  <li><strong>Resource Allocation</strong>: Dedicated memory, CPU time, and system resources</li>
+  <li><strong>Independent Execution Context</strong>: Isolated memory space and execution environment</li>
+</ul>
+
+<p><a href="https://mermaid.live/edit#pako:eNplkE1LAzEQhv_KkKN0Lx5zEEr1KtIVBI2HMZnuBvKxJJNqKf3vptltK5hT5n2eTJI5Ch0NCSkyI9OjxSGh7_b3KkBdH3ef0HUP8EzfEl5S1JQzbBJV1cxGJc3YEpqDhLXxlq-whTMuIdgwSOj1SKY4StCTI815MWfe3De03Nwt5ViSppbM3sL-Xnm11nu0Dr8c_W_5SsnbcH61hKcf0oVtDLCJfnLEi39z2pH6dbESvoZoTZ3P8WwpwSN5UkLWraEdFsdKqHCqKhaO_SFoITkVWokUyzBeijKZ23gv4YThPcZa7tBlOv0CqSiCOg"><img src="https://mermaid.ink/img/pako:eNplkE1LAzEQhv_KkKN0Lx5zEEr1KtIVBI2HMZnuBvKxJJNqKf3vptltK5hT5n2eTJI5Ch0NCSkyI9OjxSGh7_b3KkBdH3ef0HUP8EzfEl5S1JQzbBJV1cxGJc3YEpqDhLXxlq-whTMuIdgwSOj1SKY4StCTI815MWfe3De03Nwt5ViSppbM3sL-Xnm11nu0Dr8c_W_5SsnbcH61hKcf0oVtDLCJfnLEi39z2pH6dbESvoZoTZ3P8WwpwSN5UkLWraEdFsdKqHCqKhaO_SFoITkVWokUyzBeijKZ23gv4YThPcZa7tBlOv0CqSiCOg?type=png" alt="Process Lifecycle" /></a></p>
+
+<h2 id="3-process-definition-and-components">3. Process Definition and Components</h2>
+<p>A process comprises several critical components that define its structure and behavior:</p>
+
+<h3 id="a-program-code-text-section">a. Program Code (Text Section)</h3>
+<ul>
+  <li>Contains the compiled machine instructions</li>
+  <li>Read-only and shared among process instances</li>
+  <li>Represents the static algorithmic logic of the program</li>
+</ul>
+
+<h3 id="b-data-section">b. Data Section</h3>
+<ul>
+  <li>Stores global and static variables</li>
+  <li>Divided into initialized and uninitialized data</li>
+  <li>Provides persistent storage for program-wide data</li>
+</ul>
+
+<h3 id="c-stack">c. Stack</h3>
+<ul>
+  <li>Manages function call mechanisms</li>
+  <li>Stores local variables, function parameters</li>
+  <li>Supports dynamic memory allocation for function executions</li>
+  <li>Grows and shrinks during program runtime</li>
+</ul>
+
+<h3 id="d-heap">d. Heap</h3>
+<ul>
+  <li>Dynamic memory allocation area</li>
+  <li>Used for runtime memory requests</li>
+  <li>Managed manually in languages like C (malloc/free)</li>
+  <li>Provides flexible memory management</li>
+</ul>
+
+<h2 id="4-process-memory-layout">4. Process Memory Layout</h2>
+<p>Modern operating systems organize process memory in a structured manner:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>High Memory Address
++---------------------------------------------------+
+|                 Kernel Virtual                    |
+|               Address Space                       |
+|   ◆ Kernel code, data, and modules                |
+|   ◆ Shared across all processes                   |
++---------------------------------------------------+
+|                     Stack                         |
+|   ◆ Dynamic memory for function calls             |
+|   ◆ Local variables                               |
+|   ◆ Grows downward ↓                              |
++---------------------------------------------------+
+|                     Heap                          |
+|   ◆ Dynamic memory allocation                     |
+|   ◆ malloc(), new()                               |
+|   ◆ Grows upward ↑                                |
++---------------------------------------------------+
+|             Uninitialized Data                    |
+|   ◆ BSS segment                                   |
+|   ◆ Zero-initialized static variables             |
++---------------------------------------------------+
+|               Initialized Data                    |
+|   ◆ Data segment                                  |
+|   ◆ Initialized global and static variables       |
++---------------------------------------------------+
+|                 Program Text                      |
+|   ◆ Text segment                                  |
+|   ◆ Executable instructions                       |
+|   ◆ Read-only memory                              |
++---------------------------------------------------+
+|                  Kernel Space                     |
+|   ◆ Per-process kernel data structures            |
+|   ◆ Page tables                                   |
++---------------------------------------------------+
+|               Kernel Direct Mapping               |
+|   ◆ Direct mapping of all physical memory         |
++---------------------------------------------------+
+|              Kernel Dynamic Memory                |
+|   ◆ Memory for kernel modules                     |
+|   ◆ vmalloc() allocation                          |
++---------------------------------------------------+
+Low Memory Address
+</code></pre></div></div>
+<h3 id="key-characteristics">Key Characteristics</h3>
+
+<ol>
+  <li>
+    <p><strong>Memory Organization</strong>: The process memory is organized from high to low addresses, with different segments serving specific purposes.</p>
+  </li>
+  <li><strong>Dynamic Regions</strong>:
+    <ul>
+      <li><strong>Stack</strong>: Grows downward, used for function call management</li>
+      <li><strong>Heap</strong>: Grows upward, used for dynamic memory allocation</li>
+    </ul>
+  </li>
+  <li><strong>Static Memory Regions</strong>:
+    <ul>
+      <li><strong>Uninitialized Data (BSS)</strong>: Zero-initialized static variables</li>
+      <li><strong>Initialized Data</strong>: Initialized global and static variables</li>
+      <li><strong>Program Text</strong>: Read-only executable instructions</li>
+    </ul>
+  </li>
+  <li><strong>Kernel Spaces</strong>:
+    <ul>
+      <li><strong>Kernel Virtual Address Space</strong>: Shared kernel resources</li>
+      <li><strong>Per-process Kernel Space</strong>: Process-specific kernel data</li>
+      <li><strong>Kernel Direct Mapping</strong>: Physical memory mapping</li>
+      <li><strong>Kernel Dynamic Memory</strong>: For kernel modules and allocations</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Note</strong>: We will go more in-depth on this topic in the future.</p>
+</blockquote>
+
+<h2 id="5-process-states">5. Process States</h2>
+<p>A process transitions through multiple states during its lifecycle:</p>
+
+<ol>
+  <li><strong>New</strong>: Process being created</li>
+  <li><strong>Ready</strong>: Prepared for execution, waiting for CPU allocation</li>
+  <li><strong>Running</strong>: Currently executing instructions</li>
+  <li><strong>Waiting</strong>: Paused, waiting for external event (I/O, resource)</li>
+  <li><strong>Terminated</strong>: Execution completed, resources being deallocated</li>
+</ol>
+
+<h2 id="6-process-control-block-pcb">6. Process Control Block (PCB)</h2>
+<p>The Process Control Block is a data structure containing critical process metadata:</p>
+
+<ul>
+  <li>Process ID (PID)</li>
+  <li>Process State</li>
+  <li>Program Counter</li>
+  <li>CPU Registers</li>
+  <li>CPU Scheduling Information</li>
+  <li>Memory Management Details</li>
+  <li>Accounting Information</li>
+</ul>
+
+<h2 id="7-practical-implementation">7. Practical Implementation</h2>
+
+<h3 id="process-creation-mechanisms">Process Creation Mechanisms</h3>
+<p>Processes can be created through:</p>
+<ul>
+  <li>System initialization</li>
+  <li>User request to create new process</li>
+  <li>Spawning child processes</li>
+  <li>Batch job scheduling</li>
+</ul>
+
+<h2 id="8-code-example-process-information-demonstration">8. Code Example: Process Information Demonstration</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">process_id</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>   <span class="c1">// Current process ID</span>
+    <span class="n">pid_t</span> <span class="n">parent_process_id</span> <span class="o">=</span> <span class="n">getppid</span><span class="p">();</span>  <span class="c1">// Parent process ID</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Current Process ID: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">process_id</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Parent Process ID: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">parent_process_id</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="9-references-and-further-reading">9. References and Further Reading</h2>
+
+<ul>
+  <li>Silberschatz, A., Galvin, P. B., &amp; Gagne, G. (2018). Operating System Concepts</li>
+  <li>Tanenbaum, A. S. (2006). Modern Operating Systems</li>
+  <li>Linux Manual Pages (man7.org)</li>
+  <li>IEEE POSIX Standards Documentation</li>
+</ul>
+
+<h2 id="10-conclusion">10. Conclusion</h2>
+<p>Processes represent the fundamental unit of computation in modern operating systems. Understanding their structure, lifecycle, and management provides insights into how computers execute complex computational tasks efficiently and systematically.</p>
+
+<p><strong>Key Takeaways:</strong></p>
+<ul>
+  <li>Processes are dynamic, active program instances</li>
+  <li>They have structured memory layouts</li>
+  <li>Multiple states govern their execution</li>
+  <li>Process Control Blocks manage critical metadata</li>
+</ul>
+
+<h2 id="11-learning-pathway">11. Learning Pathway</h2>
+<p>This exploration of process concepts sets the foundation for understanding advanced operating system principles. In subsequent days, we’ll dive deeper into process states, creation mechanisms, and scheduling algorithms.</p>
+
+<p><strong><em>Next in Series: Day 2 - Process States and Transitions</em></strong></p>
+<blockquote>
+  <p>Note: Code examples and demonstrations are best understood through practical execution and experimentation.</p>
+</blockquote>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/mohitmishra786/exploring-os/edit/gh-pages/src/day-1-process-concept.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

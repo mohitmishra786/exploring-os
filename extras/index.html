@@ -1,0 +1,21 @@
+---
+layout: default
+title: Extra OS Topics
+---
+
+<div class="content-list">
+    <h1>Extra OS Topics</h1>
+    <div class="post-list">
+        {% assign sorted_extras = site.pages | where_exp: "item", "item.path contains 'extras/'" | sort: 'path' %}
+        {% for extra in sorted_extras %}
+            {% unless extra.path contains 'index.html' %}
+            <div class="post-item">
+                <h2><a href="{{ site.baseurl }}{{ extra.url }}">{{ extra.title }}</a></h2>
+                {% if extra.excerpt %}
+                    <p>{{ extra.excerpt }}</p>
+                {% endif %}
+            </div>
+            {% endunless %}
+        {% endfor %}
+    </div>
+</div>
