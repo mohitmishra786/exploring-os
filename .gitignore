@@ -135,3 +135,37 @@ yarn-error.log*
 local/
 *.local
 config.local.yml
+
+# Ignore vendor bundle
+vendor/bundle
+
+# Ignore Jekyll build output
+_site
+
+# Ignore Sass and CSS generated files
+.sass-cache
+*.css.map
+*.scss.map
+
+# Ignore Ruby and gem related files
+*.gem
+*.gemspec
+Gemfile.lock
+gemfiles/
+
+# Ignore logs and temp files
+*.log
+tmp/
+
+# Ignore documentation and README files
+doc/
+README.md
+
+# Ignore test and spec files
+test/
+spec/
+
+# Ignore miscellaneous files
+.DS_Store
+Thumbs.db
+ehthumbs.db
