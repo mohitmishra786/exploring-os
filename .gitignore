@@ -157,10 +157,6 @@ gemfiles/
 *.log
 tmp/
 
-# Ignore documentation and README files
-doc/
-README.md
-
 # Ignore test and spec files
 test/
 spec/
