@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Canonical Address"
+permalink: /extras/canonical-address.html
+---
+
 # Understanding Canonical Addresses in 64-bit Architectures
 
 ## Introduction to 64-bit Addressing
