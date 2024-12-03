@@ -63,6 +63,8 @@ void copy_page_tables(struct task_struct *child) {
     }
 }
 ```
+### Visualization of Fork and COW Mechanism
+![Image](../src/images/fork-and-cow.png)
 
 ## Copy-on-Write (CoW) Mechanism
 
