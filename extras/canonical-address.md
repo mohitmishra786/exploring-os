@@ -36,6 +36,7 @@ Modern computing utilizes 64-bit architectures for their vast address space (the
 *Below diagram illustrating two valid regions at the address space ends, with a large invalid gap in the middle.*
 ![](https://bottomupcs.com/chapter05/figures/canonical.svg)
 > [Image Credits](https://bottomupcs.com/ch06s02.html#canonical_address)
+
 ## Low-Level Details of Canonical Address Handling
 
 ### Address Translation and Memory Management
