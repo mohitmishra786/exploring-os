@@ -72,6 +72,8 @@ The primary system calls involved in process creation are:
 
 The `fork()` system call creates a new process by duplicating the calling process. The new process, known as the child process, is an exact copy of the parent process, including its memory, file descriptors, and signal handlers. The only difference is the return value of `fork()`, which is 0 in the child process and the child's PID in the parent process.
 
+> You can read more about Fork and Copy On Write Mechanism here:  [Fork and Copy-On-Write in Linux](https://mohitmishra786.github.io/exploring-os/extras/fork-and-copy-on-write-in-linux.html)
+
 ### 3.2 Code Example
 
 Here's a simple example demonstrating the use of `fork()`:
