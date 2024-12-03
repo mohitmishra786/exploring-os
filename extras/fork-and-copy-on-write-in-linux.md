@@ -4,10 +4,6 @@ title: "Understanding fork() and Copy-on-Write (CoW) on Linux"
 permalink: /extras/fork-and-copy-on-write-in-linux.html
 ---
 
-Here's all the content in a single Markdown code block with proper headers, subheaders, and bullet points:
-
-markdown
-
 # Understanding `fork()` and Copy-on-Write (CoW) on Linux
 
 ## The `fork()` System Call
