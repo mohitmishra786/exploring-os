@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0.0' # Specify your Ruby version here
+          bundler-cache: true # This will cache gems and run bundle install automatically
 
       - name: Build and deploy
         run: |
