@@ -8,7 +8,8 @@ permalink: /extras/memory-mapping-segment-and-heap-grow-until-they-meet.html
 
 >This question can come to anyone's mind who is trying to understand the memory structure.
 
-![Image](https://i.sstatic.net/epGfE.png)
+![Image](../src/images/memSegment.png)
+> [Credits](https://i.sstatic.net/epGfE.png)
 
 #### **RLIMIT_AS**
 
