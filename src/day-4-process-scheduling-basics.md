@@ -15,9 +15,8 @@ permalink: /src/day-4-process-scheduling-basics.html
 6. Practical Implementation
 7. Code Example
 8. Compilation and Execution Instructions
-9. Mermaid Visualization
-10. References and Further Reading
-11. Conclusion
+9. References and Further Reading
+10. Conclusion
 
 ## 1. Introduction
 Process scheduling is the heartbeat of modern operating systems, determining how computational resources are allocated and managed across multiple competing processes. This intricate dance of resource allocation ensures system efficiency, responsiveness, and fairness.
