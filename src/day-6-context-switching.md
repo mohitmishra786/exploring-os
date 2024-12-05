@@ -27,10 +27,9 @@ permalink: /src/day-6-context-switching.html
    - Context Switch Simulation
    - Performance Measurement
 7. Real-world Examples
-8. Sequence Diagrams
-9. Further Reading
-10. Conclusion
-11. References
+8. Further Reading
+9. Conclusion
+10. References
 
 ## 1. Introduction
 
