@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Address Translation in Linux/MIPS Systems"
+permalink: /extras/address-translation-in-linux-mips-systems.html
+---
+
 # Address Translation in Linux/MIPS Systems
 
 ![Memory Mapping](../src/images/addressTranslationLinux_Mips.jpg)
