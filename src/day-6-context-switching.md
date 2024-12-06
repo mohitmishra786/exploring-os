@@ -209,6 +209,7 @@ Factors affecting context switch overhead:
    - Resource management
 
 ### Optimization Techniques
+
 1. **Process Affinity**
 ```c
 #define _GNU_SOURCE
