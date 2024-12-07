@@ -56,13 +56,7 @@ A **thread** is the smallest unit of execution within a process. Threads share t
 - **Lightweight**: Threads are more lightweight than processes because they share resources and require less overhead for creation and context switching.
 
 ### Threads vs Processes
-| **Aspect**         | **Thread**                          | **Process**                          |
-|---------------------|-------------------------------------|---------------------------------------|
-| **Memory**         | Shares memory with parent process   | Has its own memory space              |
-| **Creation Time**  | Faster                              | Slower                                |
-| **Communication**  | Easier (shared memory)              | More complex (IPC mechanisms needed)  |
-| **Overhead**       | Lower                               | Higher                                |
-
+![Thread Vs Process](../src/images/threads_vs_process.png)
 ---
 
 ## 3. Why Use Threads?
