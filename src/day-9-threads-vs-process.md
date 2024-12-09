@@ -1070,80 +1070,272 @@ void demonstrate_decision_making() {
 Understanding the differences between threads and processes is crucial for system design. Here's a quick reference implementation showing both approaches:
 
 ```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/time.h>
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <pthread.h>  
+#include <unistd.h>  
+#include <sys/wait.h>  
+#include <sys/time.h>  
+#include <string.h>  
+#include <sys/mman.h>  
+#include <fcntl.h>  
 
-// Common interface for both approaches
-typedef struct {
-    void (*initialize)(void);
-    void (*cleanup)(void);
-    void (*process_data)(void* data);
-} concurrent_processor_t;
+#define NUM_ITEMS 1000  
+#define SHARED_MEM_NAME "/shared_mem_example"  
 
-// Thread-based implementation
-typedef struct {
-    pthread_t* threads;
-    int num_threads;
-    void* shared_data;
-    pthread_mutex_t mutex;
-} thread_processor_t;
+// Requirements structure for decision making  
+typedef struct {  
+    int isolation_weight;  
+    int performance_weight;  
+    int communication_weight;  
+    int security_weight;  
+} requirements_t;  
 
-// Process-based implementation
-typedef struct {
-    pid_t* processes;
-    int num_processes;
-    void* shared_memory;
-    int shm_fd;
-} process_processor_t;
+// Common data structure for both approaches  
+typedef struct {  
+    int* data;  
+    int start_index;  
+    int end_index;  
+} work_data_t;  
 
-// Implementation functions
-void thread_initialize(thread_processor_t* processor, int num_threads) {
-    processor->threads = malloc(num_threads * sizeof(pthread_t));
-    processor->num_threads = num_threads;
-    pthread_mutex_init(&processor->mutex, NULL);
-}
+// Common interface for both approaches  
+typedef struct {  
+    void (*initialize)(void* processor_data);  
+    void (*process_data)(void* processor_data, work_data_t* work);  
+    void (*cleanup)(void* processor_data);  
+    void* processor_data;  
+} concurrent_processor_t;  
 
-void process_initialize(process_processor_t* processor, int num_processes) {
-    processor->processes = malloc(num_processes * sizeof(pid_t));
-    processor->num_processes = num_processes;
-    // Setup shared memory here
-}
+// Thread-based implementation  
+typedef struct {  
+    pthread_t* threads;  
+    int num_threads;  
+    int* shared_data;  
+    pthread_mutex_t mutex;  
+    work_data_t* work_units;  
+} thread_processor_t;  
 
-concurrent_processor_t* create_processor(int is_threaded, int num_workers) {
-    concurrent_processor_t* processor = malloc(sizeof(concurrent_processor_t));
-    
-    if (is_threaded) {
-        thread_processor_t* tp = malloc(sizeof(thread_processor_t));
-        thread_initialize(tp, num_workers);
-        // Set up thread-specific functions
-    } else {
-        process_processor_t* pp = malloc(sizeof(process_processor_t));
-        process_initialize(pp, num_workers);
-        // Set up process-specific functions
-    }
-    
-    return processor;
-}
+// Process-based implementation  
+typedef struct {  
+    pid_t* processes;  
+    int num_processes;  
+    int* shared_memory;  
+    int shm_fd;  
+    work_data_t* work_units;  
+} process_processor_t;  
 
-// Example usage:
-int main() {
-    // Choose implementation based on requirements
-    requirements_t reqs = {
-        .isolation_weight = 5,
-        .performance_weight = 8,
-        .communication_weight = 7,
-        .security_weight = 4
-    };
-    
-    int use_threads = strcmp(suggest_implementation(reqs), "Use Threads") == 0;
-    concurrent_processor_t* processor = create_processor(use_threads, 4);
-    
-    // Use the processor...
-    
-    return 0;
-}
+// Decision making function  
+const char* suggest_implementation(requirements_t reqs) {  
+    int process_score = 0;  
+    int thread_score = 0;  
+
+    process_score += reqs.isolation_weight * 9;  
+    process_score += reqs.performance_weight * 5;  
+    process_score += reqs.communication_weight * 3;  
+    process_score += reqs.security_weight * 9;  
+
+    thread_score += reqs.isolation_weight * 3;  
+    thread_score += reqs.performance_weight * 8;  
+    thread_score += reqs.communication_weight * 9;  
+    thread_score += reqs.security_weight * 4;  
+
+    return (process_score > thread_score) ? "Use Processes" : "Use Threads";  
+}  
+
+// Thread worker function  
+void* thread_worker(void* arg) {  
+    work_data_t* work = (work_data_t*)arg;  
+
+    for (int i = work->start_index; i < work->end_index; i++) {  
+        work->data[i] *= 2;  // Simple data processing  
+    }  
+
+    return NULL;  
+}  
+
+// Thread implementation functions  
+void thread_initialize(void* processor_data) {  
+    thread_processor_t* tp = (thread_processor_t*)processor_data;  
+    tp->shared_data = malloc(NUM_ITEMS * sizeof(int));  
+    tp->work_units = malloc(tp->num_threads * sizeof(work_data_t));  
+
+    // Initialize data  
+    for (int i = 0; i < NUM_ITEMS; i++) {  
+        tp->shared_data[i] = i;  
+    }  
+
+    pthread_mutex_init(&tp->mutex, NULL);  
+}  
+
+void thread_process_data(void* processor_data, work_data_t* work) {  
+    thread_processor_t* tp = (thread_processor_t*)processor_data;  
+    int items_per_thread = NUM_ITEMS / tp->num_threads;  
+
+    // Create and start threads  
+    for (int i = 0; i < tp->num_threads; i++) {  
+        tp->work_units[i].data = tp->shared_data;  
+        tp->work_units[i].start_index = i * items_per_thread;  
+        tp->work_units[i].end_index = (i == tp->num_threads - 1) ?   
+                                     NUM_ITEMS : (i + 1) * items_per_thread;  
+
+        pthread_create(&tp->threads[i], NULL, thread_worker, &tp->work_units[i]);  
+    }  
+
+    // Wait for threads to complete  
+    for (int i = 0; i < tp->num_threads; i++) {  
+        pthread_join(tp->threads[i], NULL);  
+    }  
+}  
+
+void thread_cleanup(void* processor_data) {  
+    thread_processor_t* tp = (thread_processor_t*)processor_data;  
+    pthread_mutex_destroy(&tp->mutex);  
+    free(tp->shared_data);  
+    free(tp->work_units);  
+    free(tp->threads);  
+    free(tp);  
+}  
+
+// Process worker function  
+void process_worker(work_data_t* work) {  
+    for (int i = work->start_index; i < work->end_index; i++) {  
+        work->data[i] *= 2;  // Simple data processing  
+    }  
+    exit(0);  
+}  
+
+// Process implementation functions  
+void process_initialize(void* processor_data) {  
+    process_processor_t* pp = (process_processor_t*)processor_data;  
+
+    // Create shared memory  
+    pp->shm_fd = shm_open(SHARED_MEM_NAME, O_CREAT | O_RDWR, 0666);  
+    ftruncate(pp->shm_fd, NUM_ITEMS * sizeof(int));  
+
+    pp->shared_memory = mmap(NULL, NUM_ITEMS * sizeof(int),  
+                            PROT_READ | PROT_WRITE,  
+                            MAP_SHARED, pp->shm_fd, 0);  
+
+    pp->work_units = malloc(pp->num_processes * sizeof(work_data_t));  
+
+    // Initialize data  
+    for (int i = 0; i < NUM_ITEMS; i++) {  
+        pp->shared_memory[i] = i;  
+    }  
+}  
+
+void process_process_data(void* processor_data, work_data_t* work) {  
+    process_processor_t* pp = (process_processor_t*)processor_data;  
+    int items_per_process = NUM_ITEMS / pp->num_processes;  
+
+    // Create and start processes  
+    for (int i = 0; i < pp->num_processes; i++) {  
+        pp->work_units[i].data = pp->shared_memory;  
+        pp->work_units[i].start_index = i * items_per_process;  
+        pp->work_units[i].end_index = (i == pp->num_processes - 1) ?   
+                                     NUM_ITEMS : (i + 1) * items_per_process;  
+
+        pid_t pid = fork();  
+        if (pid == 0) {  
+            process_worker(&pp->work_units[i]);  
+        }  
+        pp->processes[i] = pid;  
+    }  
+
+    // Wait for processes to complete  
+    for (int i = 0; i < pp->num_processes; i++) {  
+        waitpid(pp->processes[i], NULL, 0);  
+    }  
+}  
+
+void process_cleanup(void* processor_data) {  
+    process_processor_t* pp = (process_processor_t*)processor_data;  
+    munmap(pp->shared_memory, NUM_ITEMS * sizeof(int));  
+    shm_unlink(SHARED_MEM_NAME);  
+    free(pp->work_units);  
+    free(pp->processes);  
+    free(pp);  
+}  
+
+concurrent_processor_t* create_processor(int is_threaded, int num_workers) {  
+    concurrent_processor_t* processor = malloc(sizeof(concurrent_processor_t));  
+
+    if (is_threaded) {  
+        thread_processor_t* tp = malloc(sizeof(thread_processor_t));  
+        tp->threads = malloc(num_workers * sizeof(pthread_t));  
+        tp->num_threads = num_workers;  
+
+        processor->initialize = thread_initialize;  
+        processor->process_data = thread_process_data;  
+        processor->cleanup = thread_cleanup;  
+        processor->processor_data = tp;  
+    } else {  
+        process_processor_t* pp = malloc(sizeof(process_processor_t));  
+        pp->processes = malloc(num_workers * sizeof(pid_t));  
+        pp->num_processes = num_workers;  
+
+        processor->initialize = process_initialize;  
+        processor->process_data = process_process_data;  
+        processor->cleanup = process_cleanup;  
+        processor->processor_data = pp;  
+    }  
+
+    return processor;  
+}  
+
+void print_results(int* data, int size) {  
+    printf("First 10 results: ");  
+    for (int i = 0; i < 10 && i < size; i++) {  
+        printf("%d ", data[i]);  
+    }  
+    printf("\n");  
+}  
+
+int main() {  
+    // Choose implementation based on requirements  
+    requirements_t reqs = {  
+        .isolation_weight = 5,  
+        .performance_weight = 8,  
+        .communication_weight = 7,  
+        .security_weight = 4  
+    };  
+
+    const char* suggestion = suggest_implementation(reqs);  
+    printf("Based on requirements, suggestion: %s\n", suggestion);  
+
+    int use_threads = (strcmp(suggestion, "Use Threads") == 0);  
+    concurrent_processor_t* processor = create_processor(use_threads, 4);  
+
+    // Initialize the processor  
+    processor->initialize(processor->processor_data);  
+
+    // Process data  
+    work_data_t work = {0}; // Dummy work data, actual work units are created inside  
+
+    struct timeval start, end;  
+    gettimeofday(&start, NULL);  
+
+    processor->process_data(processor->processor_data, &work);  
+
+    gettimeofday(&end, NULL);  
+    long microseconds = (end.tv_sec - start.tv_sec) * 1000000 +   
+                       (end.tv_usec - start.tv_usec);  
+
+    // Print results  
+    if (use_threads) {  
+        thread_processor_t* tp = (thread_processor_t*)processor->processor_data;  
+        print_results(tp->shared_data, NUM_ITEMS);  
+    } else {  
+        process_processor_t* pp = (process_processor_t*)processor->processor_data;  
+        print_results(pp->shared_memory, NUM_ITEMS);  
+    }  
+
+    printf("Processing time: %ld microseconds\n", microseconds);  
+
+    // Cleanup  
+    processor->cleanup(processor->processor_data);  
+    free(processor);  
+
+    return 0;  
+}  
 ```
