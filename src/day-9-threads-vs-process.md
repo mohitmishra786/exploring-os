@@ -1,4 +1,10 @@
-# Day 9: Thread vs Process Comparison - A Comprehensive Analysis
+---
+layout: post
+title: "Day 9: Thread vs Process"
+permalink: /src/day-9-thread-vs-process.html
+---
+
+# Day 9: Thread vs Process Comparison - Implementing Concurrent Systems in C
 
 ## Table of Contents
 1. Introduction
