@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 10: Multilthreading Models"
-permalink: /src/day-9-multithreading-models.html
+permalink: /src/day-10-multithreading-models.html
 ---
 
 # Day 10: Deep Dive into Multithreading Models: User vs Kernel Threads
