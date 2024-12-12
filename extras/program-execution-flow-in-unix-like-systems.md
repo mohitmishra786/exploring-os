@@ -21,5 +21,3 @@ permalink: /extras/program-execution-flow.html
 - **Global Constructors (`do_global_ctors_aux`, `constructors1.n`)**: These are functions that construct global objects, part of the C++ runtime.
 - **Frame Dummy**: This might refer to frame unwinding setup or dummy frame setup for debugging or exception handling.
 - **Gmon Start (`__gmon_start__`)**: This is often related to profiling or gprof, a performance analysis tool.
-
-**Title for the Post**: "Program Execution Flow in Unix-like Systems: From Loader to Exit"
