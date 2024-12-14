@@ -1,4 +1,9 @@
-```markdown
+---
+layout: post
+title: "Day 14: Deadlock Detection Algorithms"
+permalink: /src/day-14-deadlock-detection-algorithms.html
+---
+
 # Day 14: Understanding Deadlock Detection Algorithms and Banker's Algorithm
 
 ## Table of Contents
