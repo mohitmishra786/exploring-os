@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 15: Memory Management"
-permalink: /src/day-14-memory-management.html
+permalink: /src/day-15-memory-management.html
 ---
 
 # Day 15: Memory Management Overview and Memory Hierarchy
