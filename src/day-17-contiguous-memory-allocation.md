@@ -221,9 +221,9 @@ Memory protection mechanisms ensure that processes can only access the memory re
 
 Memory protection is implemented using hardware and software mechanisms that control access to memory locations. Base and limit registers define the boundaries of a process's allocated memory, while access rights specify the type of operations (read, write, execute) allowed within those boundaries. This prevents processes from accessing memory outside their designated areas, enhancing system security and stability.
 
-## 6. Implementation Examples
+## 6. Basic Implementation
 
-This section provides a more complete implementation that combines memory allocation strategies with memory protection mechanisms. The code demonstrates how to manage memory regions with different access permissions and how to enforce these permissions during memory access.
+The code demonstrates how to manage memory regions with different access permissions and how to enforce these permissions during memory access.
 
 
 The `ProtectedMemoryManager` struct integrates the memory management functions with a protection table that stores the access rights for each memory region.  This example illustrates how a more robust and secure memory management system can be built upon the principles of contiguous allocation.
