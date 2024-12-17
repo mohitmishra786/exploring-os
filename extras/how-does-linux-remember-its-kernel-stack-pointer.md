@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How does Linux remember its Kernel Stack Pointer?"
-permalink: /extras/how-does-linux-remember-its-kernel-stack-pointer?.html
+permalink: /extras/how-does-linux-remember-its-kernel-stack-pointer.html
 ---
 ## Kernel Stack Pointer Management During Interrupts
 ![Memory Mapping](../src/images/context-switching.png)
