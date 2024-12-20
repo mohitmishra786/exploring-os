@@ -4,7 +4,7 @@ title: "Day 20: Page Replacement Algorithms"
 permalink: /src/day-20-page-replacement-algorithms.html
 ---
 
-# Day 19: Page Replacement Algorithms - A Deep Dive
+# Day 20: Page Replacement Algorithms - A Deep Dive
 
 ## Table of Contents
 
