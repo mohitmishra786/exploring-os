@@ -4,7 +4,7 @@ title: "Day 22: Virtual Memory"
 permalink: /src/day-22-virtual-memory.html
 ---
 
-# Day 21: Virtual Memory - Deep Dive into Demand Paging
+# Day 22: Virtual Memory - Deep Dive into Demand Paging
 
 ## Table of Contents
 
