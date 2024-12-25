@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 1: Process Concept"
+title: "Day 01: Process Concept"
 permalink: /src/day-1-process-concept.html
 ---
 
-# Day 1: Deep Dive into Process Concepts in Operating Systems
+# Day 01: Deep Dive into Process Concepts in Operating Systems
 
 ## Table of Contents
 1. [Introduction](#1-introduction)

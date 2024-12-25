@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 7: Thread Concept"
+title: "Day 07: Thread Concept"
 permalink: /src/day-6-thread-concept.html
 ---
 
-# Day 7: Deep Dive into Thread Concepts - Basic Understanding of Threads
+# Day 07: Deep Dive into Thread Concepts - Basic Understanding of Threads
 
 ## Table of Contents
 1. Introduction

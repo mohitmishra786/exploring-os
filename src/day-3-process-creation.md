@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 3: Process Creation"
+title: "Day 03: Process Creation"
 permalink: /src/day-3-process-creation.html
 ---
 
-# Day 3: Process Creation Mechanisms - A Deep Dive
+# Day 03: Process Creation Mechanisms - A Deep Dive
 
 ## Table of Contents
 1. Introduction
