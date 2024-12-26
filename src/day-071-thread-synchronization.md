@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Day 70: Thread Synchronization"
+title: "Day 071: Thread Synchronization"
 permalink: /src/day-9-thread-synchronization.html
 ---
 
