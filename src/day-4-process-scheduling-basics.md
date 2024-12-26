@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 4: Process Scheduling Basics"
+title: "Day 04: Process Scheduling Basics"
 permalink: /src/day-4-process-scheduling-basics.html
 ---
 
-# Day 4: Process Scheduling Basics - Orchestrating Computational Resources
+# Day 04: Process Scheduling Basics - Orchestrating Computational Resources
 
 ## Table of Contents
 1. Introduction

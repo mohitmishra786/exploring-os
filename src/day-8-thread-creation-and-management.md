@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Day 8: Thread Creation and Management"
+title: "Day 08: Thread Creation and Management"
 permalink: /src/day-6-thread-creation-and-management.html
 ---
-# Day 8: Thread Creation and Management - POSIX Threads Implementation
+# Day 08: Thread Creation and Management - POSIX Threads Implementation
 
 ## Table of Contents
 1. Introduction

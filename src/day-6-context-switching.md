@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 6: Context Switching"
+title: "Day 06: Context Switching"
 permalink: /src/day-6-context-switching.html
 ---
 
-# Day 6: Deep Dive into Context Switching Processes - Low-Level Implementation Details
+# Day 06: Deep Dive into Context Switching Processes - Low-Level Implementation Details
 
 ## Table of Contents
 1. Introduction

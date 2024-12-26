@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 5: Advanced Scheduling Algorithms"
+title: "Day 05: Advanced Scheduling Algorithms"
 permalink: /src/day-5-scheduling-algorithms.html
 ---
 
-# Day 5: Advanced Scheduling Algorithms in Operating Systems
+# Day 05: Advanced Scheduling Algorithms in Operating Systems
 
 ## Table of Contents
 1. Introduction
