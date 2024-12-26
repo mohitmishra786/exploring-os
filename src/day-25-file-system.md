@@ -20,9 +20,8 @@ permalink: /src/day-25-file-system.html
 10. [Buffering Mechanisms](#10-buffering-mechanisms)
 11. [Error Handling](#11-error-handling)
 12. [Practical Implementation](#12-practical-implementation)
-13. [Sequence Diagrams](#13-sequence-diagrams)
-14. [Conclusion](#14-conclusion)
-15. [References and Further Reading](#15-references-and-further-reading)
+13. [Conclusion](#14-conclusion)
+14. [References and Further Reading](#15-references-and-further-reading)
 
 ## 1. Introduction
 <a name="1-introduction"></a>
