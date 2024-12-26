@@ -4,7 +4,7 @@ title: "Day 25: File System"
 permalink: /src/day-25-file-system.html
 ---
 
-# File System Basics - Day 24
+# File System Basics
 
 ## Table of Contents
 
@@ -764,4 +764,4 @@ File System Basics form the foundation for understanding how modern operating sy
 *   POSIX File System specifications
 *   "Advanced Programming in the UNIX Environment" by W. Richard Stevens
 
-[Next: Day 25 - File System Structure]
+[Next: Day 26 - File System Structure]
