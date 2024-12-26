@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 01: Process Concept"
-permalink: /src/day-1-process-concept.html
+permalink: /src/day-01-process-concept.html
 ---
 
 # Day 01: Deep Dive into Process Concepts in Operating Systems

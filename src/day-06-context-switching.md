@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 06: Context Switching"
-permalink: /src/day-6-context-switching.html
+permalink: /src/day-06-context-switching.html
 ---
 
 # Day 06: Deep Dive into Context Switching Processes - Low-Level Implementation Details

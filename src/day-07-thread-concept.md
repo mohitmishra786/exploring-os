@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 07: Thread Concept"
-permalink: /src/day-6-thread-concept.html
+permalink: /src/day-07-thread-concept.html
 ---
 
 # Day 07: Deep Dive into Thread Concepts - Basic Understanding of Threads

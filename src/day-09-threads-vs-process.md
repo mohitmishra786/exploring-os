@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 09: Thread vs Process"
-permalink: /src/day-9-thread-vs-process.html
+permalink: /src/day-09-thread-vs-process.html
 ---
 
 # Day 09: Thread vs Process Comparison - Implementing Concurrent Systems in C
