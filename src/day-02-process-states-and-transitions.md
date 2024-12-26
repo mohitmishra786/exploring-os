@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 02: Process States and Transitions"
-permalink: /src/day-2-process-states-and-transitions.html
+permalink: /src/day-02-process-states-and-transitions.html
 ---
 # Day 02: Process States and Transitions - A Comprehensive Exploration
 
