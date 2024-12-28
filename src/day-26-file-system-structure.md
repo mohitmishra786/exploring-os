@@ -800,4 +800,4 @@ Directory structures are fundamental to file system organization and management.
 * "Unix Filesystem Implementation" by Marshall Kirk McKusick
 * "The Linux Programming Interface" by Michael Kerrisk
 
-[Next: Day 26 - File Allocation Methods] 
+[Next: Day 27 - File Allocation Methods] 
