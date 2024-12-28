@@ -5,8 +5,6 @@ permalink: /src/day-27-file-allocation-method.html
 ---
 # File Allocation Methods
 
-Let's break this down step by step, with detailed explanations followed by implementations.
-
 ## **1. Introduction**
 File allocation methods determine how files are physically stored on disk storage devices. These methods are crucial for **_efficient storage utilization_** and **_quick file access_**, directly impacting system performance and storage efficiency.
 
