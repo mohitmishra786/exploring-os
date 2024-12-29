@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 04: Process Scheduling Basics"
-permalink: /src/day-4-process-scheduling-basics.html
+permalink: /src/day-04-process-scheduling-basics.html
 ---
 
 # Day 04: Process Scheduling Basics - Orchestrating Computational Resources

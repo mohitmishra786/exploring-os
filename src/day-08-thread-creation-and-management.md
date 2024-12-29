@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 08: Thread Creation and Management"
-permalink: /src/day-6-thread-creation-and-management.html
+permalink: /src/day-08-thread-creation-and-management.html
 ---
 # Day 08: Thread Creation and Management - POSIX Threads Implementation
 

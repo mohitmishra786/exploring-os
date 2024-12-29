@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 03: Process Creation"
-permalink: /src/day-3-process-creation.html
+permalink: /src/day-03-process-creation.html
 ---
 
 # Day 03: Process Creation Mechanisms - A Deep Dive

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Day 05: Advanced Scheduling Algorithms"
-permalink: /src/day-5-scheduling-algorithms.html
+permalink: /src/day-05-scheduling-algorithms.html
 ---
 
 # Day 05: Advanced Scheduling Algorithms in Operating Systems
