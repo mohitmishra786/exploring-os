@@ -58,8 +58,8 @@ ACLs provide a more fine-grained access control mechanism than traditional permi
 
 - **ACL Entries:** Each ACL entry specifies a user or group and the permissions granted to them.
 - **Types of ACLs:**
-  - ** discretionary access control (DAC):** Access is controlled by the file owner.
-  - ** mandatory access control (MAC):** Access is controlled by the system based on policies.
+  - **discretionary access control (DAC):** Access is controlled by the file owner.
+  - **mandatory access control (MAC):** Access is controlled by the system based on policies.
 
 **Example:**
 
