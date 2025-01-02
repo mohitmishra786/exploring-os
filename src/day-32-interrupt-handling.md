@@ -15,7 +15,7 @@ Every time you press a key or move your mouse, there's an incredible symphony of
 
 At the lowest level, when you press a key, a electrical signal travels through your keyboard's circuitry. This creates what we call an Interrupt Request (IRQ) - essentially a tiny electrical pulse saying "Hey CPU, I need your attention!" 
 
-What's really cool (and something I learned the hard way during my early days) is how the CPU handles these requests. Inside the CPU, there's a special pin called the INT pin. When an interrupt arrives, this pin gets activated, and the CPU springs into action like a well-trained emergency responder.
+What's really cool is how the CPU handles these requests. Inside the CPU, there's a special pin called the INT pin. When an interrupt arrives, this pin gets activated, and the CPU springs into action like a well-trained emergency responder.
 
 ### The Kernel's Security Guard
 
@@ -36,7 +36,7 @@ endstruc
 
 ### The Context Switch Ballet
 
-Here's something that blew my mind when I first learned about it: When an interrupt occurs, the CPU needs to save everything it was doing - and I mean everything. This process, called a context switch, is like taking a perfect snapshot of the CPU's state. Let me walk you through what happens:
+When an interrupt occurs, the CPU needs to save everything it was doing - and I mean everything. This process, called a context switch, is like taking a perfect snapshot of the CPU's state. Let me walk you through what happens:
 
 1. The CPU pushes all its current registers onto a stack
 2. It saves the current program counter (the address of the next instruction)
@@ -123,7 +123,7 @@ The kernel uses a priority-based system with something called the Task Priority 
 
 ## Real-World Applications and Gotchas
 
-After years of working with interrupts, I've collected some hard-learned lessons:
+Below you can see some:
 
 ### The Race Condition Trap
 
