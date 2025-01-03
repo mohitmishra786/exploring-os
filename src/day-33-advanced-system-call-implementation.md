@@ -6,14 +6,10 @@
 3. System Call Architecture
 4. System Call Mechanism Deep Dive
 5. System Call Tables and Dispatch
-6. User Space to Kernel Space Transition
-7. System Call Implementation Patterns
-8. Error Handling and Security
-9. Advanced Implementation Techniques
-10. Performance Considerations
-11. Practical Implementations
-12. System Call Tracing and Debugging
-14. Conclusion
+6. System Call Hooking and Interception
+7. Performance Optimization and Monitoring
+8. Debugging and Troubleshooting
+9. Conclusion
 
 ## 1. Introduction
 
