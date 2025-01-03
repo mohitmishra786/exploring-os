@@ -56,6 +56,8 @@ Modern operating systems typically provide several categories of system calls:
    - Network operations
    - Shared memory operations
 
+![System Call Architecture of Kernel and User Space](./images/systemArchOfKernelAndUserSpace.png)
+
 Let's look at a practical example of implementing a basic system call wrapper:
 
 ```c
