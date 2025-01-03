@@ -1,4 +1,4 @@
-# The Art of Interrupt Handling
+# Day 32: The Art of Interrupt Handling
 
 After spending countless hours debugging a particularly nasty timing issue in one of my embedded projects last week, I thought I'd share my learning of interrupt handling. Trust me, once you understand what's happening under the hood, you'll never look at your keyboard the same way again!
 
