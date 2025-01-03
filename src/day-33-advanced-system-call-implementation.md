@@ -1,4 +1,4 @@
-# Day 33: Advanced System Call Implementation: A Deep Dive Into Operating System Fundamentals
+# Day 33: Advanced System Call Mechanisms - Optimizing Performance and Security in OS Development
 
 ## Table of Contents
 1. Introduction
