@@ -1326,7 +1326,7 @@ int main() {
 }
 ```
 
-## 10. Conclusion
+## 9. Conclusion
 
 System call implementation remains a critical aspect of operating system design, balancing security, performance, and functionality. This comprehensive guide has covered the fundamental concepts, practical implementations, and advanced techniques in system call design and implementation.
 
