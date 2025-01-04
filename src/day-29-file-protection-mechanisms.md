@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Day 29: File Protection Mechanisms"
+permalink: /src/day-29-file-protection-mechanisms.html
+---
 # Day 29: File Protection Mechanisms
 
 ---

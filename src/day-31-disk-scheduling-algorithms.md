@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Day 31: Disk Scheduling Algorithms"
+permalink: /src/day-31-disk-scheduling-algorithms.html
+---
 # Day 31: Disk Scheduling Algorithms
 
 ---

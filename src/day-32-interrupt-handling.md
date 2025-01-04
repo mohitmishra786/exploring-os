@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Day 32: The Art of Interrupt Handling"
+permalink: /src/day-32-interrupt-handling.html
+---
 # Day 32: The Art of Interrupt Handling
 
 After spending countless hours debugging a particularly nasty timing issue in one of my embedded projects last week, I thought I'd share my learning of interrupt handling. Trust me, once you understand what's happening under the hood, you'll never look at your keyboard the same way again!
@@ -13,7 +18,7 @@ Every time you press a key or move your mouse, there's an incredible symphony of
 
 ### The Hardware Dance
 
-At the lowest level, when you press a key, a electrical signal travels through your keyboard's circuitry. This creates what we call an Interrupt Request (IRQ) - essentially a tiny electrical pulse saying "Hey CPU, I need your attention!" 
+At the lowest level, when you press a key, a electrical signal travels through your keyboard's circuitry. This creates what we call an Interrupt Request (IRQ) - essentially a tiny electrical pulse saying "Hey CPU, I need your attention!"
 
 What's really cool is how the CPU handles these requests. Inside the CPU, there's a special pin called the INT pin. When an interrupt arrives, this pin gets activated, and the CPU springs into action like a well-trained emergency responder.
 
@@ -62,16 +67,16 @@ time_t last_interrupt_time = 0;
 void detailed_interrupt_handler(int sig) {
     time_t current_time = time(NULL);
     interrupt_count++;
-    
+
     printf("\n=== Interrupt Details ===\n");
     printf("Signal received: %d\n", sig);
     printf("Interrupt count: %d\n", interrupt_count);
-    
+
     if (last_interrupt_time != 0) {
-        printf("Time since last interrupt: %ld seconds\n", 
+        printf("Time since last interrupt: %ld seconds\n",
                current_time - last_interrupt_time);
     }
-    
+
     last_interrupt_time = current_time;
 }
 
@@ -80,7 +85,7 @@ int main() {
     sa.sa_handler = detailed_interrupt_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
-    
+
     if (sigaction(SIGINT, &sa, NULL) == -1) {
         perror("Failed to set up interrupt handler");
         return 1;
@@ -88,7 +93,7 @@ int main() {
 
     printf("Interrupt handler demonstration running...\n");
     printf("Press Ctrl+C to trigger an interrupt\n");
-    
+
     while (1) {
         sleep(1);
     }

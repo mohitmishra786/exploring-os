@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Day 30: Input/Output System Management"
+permalink: /src/day-30-input-output-system-management.html
+---
 # Day 30: I/O System Management
 
 ---

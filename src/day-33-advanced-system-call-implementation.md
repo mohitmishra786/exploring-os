@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Day 33: Advanced System Call Implementation"
+permalink: /src/day-33-advanced-system-call-implementation.html
+---
+
 # Day 33: Advanced System Call Mechanisms - Optimizing Performance and Security in OS Development
 
 ## Table of Contents
