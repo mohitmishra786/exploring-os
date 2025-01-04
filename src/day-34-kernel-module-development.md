@@ -270,7 +270,7 @@ MODULE_DESCRIPTION("A simple character device driver");
 MODULE_VERSION("1.0");
 ```
 
-### Explanation
+### What are we doing in the above code?
 - **Device Operations**: The `file_operations` structure defines the functions that handle operations like opening, reading, writing, and closing the device.
 - **Device Registration**: The `register_chrdev()` function registers the character device with the kernel. The `class_create()` and `device_create()` functions create the device class and device node in `/dev`.
 - **Device Cleanup**: The `chardev_exit()` function unregisters the device and cleans up resources when the module is unloaded.
