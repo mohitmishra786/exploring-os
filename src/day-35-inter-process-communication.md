@@ -13,9 +13,9 @@ permalink: /src/day-35-inter-process-communication.html
 4. [Message Queues](#4-message-queues)
 5. [Advanced IPC Concepts](#5-advanced-ipc-concepts)
 6. [Error Handling](#6-error-handling)
-7. [Performance Considerations](#8-performance-considerations)
-8. [Security Aspects](#9-security-aspects)
-9. [Conclusion](#10-conclusion)
+7. [Performance Considerations](#7-performance-considerations)
+8. [Security Aspects](#8-security-aspects)
+9. [Conclusion](#9-conclusion)
 
 
 
