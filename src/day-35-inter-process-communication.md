@@ -1,4 +1,9 @@
-# Inter-Process Communication (IPC) - Day 35
+---
+layout: post
+title: "Day 35: Inter-Process Communication (IPC)"
+permalink: /src/day-35-inter-process-communication.html
+---
+# Day 35: Inter-Process Communication (IPC)
 
 ## Table of Contents
 
@@ -8,10 +13,9 @@
 4. [Message Queues](#4-message-queues)
 5. [Advanced IPC Concepts](#5-advanced-ipc-concepts)
 6. [Error Handling](#6-error-handling)
-7. [Flow Diagram](#7-flow-diagram)
-8. [Performance Considerations](#8-performance-considerations)
-9. [Security Aspects](#9-security-aspects)
-10. [Conclusion](#10-conclusion)
+7. [Performance Considerations](#8-performance-considerations)
+8. [Security Aspects](#9-security-aspects)
+9. [Conclusion](#10-conclusion)
 
 
 
