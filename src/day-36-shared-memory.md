@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Day 36: IShared Memory"
+title: "Day 36: Shared Memory"
 permalink: /src/day-36-shared-memory.html
 ---
 # Day 36: Shared Memory
