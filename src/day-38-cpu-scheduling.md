@@ -4,7 +4,7 @@ title: "Day 38: CPU Scheudling"
 permalink: /src/day-38-cpu-scheduling.html
 
 
-# CPU Scheduling Advanced - Day 38
+# Day-38: CPU Scheduling
 
 ## Table of Contents
 
