@@ -1,8 +1,8 @@
-
+---
 layout: post
 title: "Day 38: CPU Scheudling"
 permalink: /src/day-38-cpu-scheduling.html
-
+---
 
 # Day-38: CPU Scheduling
 
