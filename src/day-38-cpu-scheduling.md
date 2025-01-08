@@ -8,16 +8,16 @@ permalink: /src/day-38-cpu-scheduling.html
 
 ## Table of Contents
 
-1. Introduction to Advanced CPU Scheduling
+1. Introduction to CPU Scheduling
 2. Multi-Level Queue Implementation
 3. Priority-Based Scheduling
 4. Real-Time Scheduling
 5. Performance Analysis
 6. Conclusion
 
-## 1. Introduction to Advanced CPU Scheduling
+## 1. Introduction to CPU Scheduling
 
-Advanced CPU scheduling is a critical component of modern operating systems, ensuring efficient resource allocation and process management. It involves complex algorithms that determine the order in which processes are executed, balancing factors such as priority, fairness, and real-time constraints. These algorithms are designed to optimize CPU utilization, minimize waiting times, and ensure timely execution of critical tasks.
+CPU scheduling is a critical component of modern operating systems, ensuring efficient resource allocation and process management. It involves complex algorithms that determine the order in which processes are executed, balancing factors such as priority, fairness, and real-time constraints. These algorithms are designed to optimize CPU utilization, minimize waiting times, and ensure timely execution of critical tasks.
 
 [![](https://mermaid.ink/img/pako:eNq9Uz1vwjAQ_SuW50BNIBA8sNBKHdoKCXWpslj2QawmcXBsFYr4770QBQUhoFKlnpfcvXcf7xzvqTQKKKcVbDwUEh61WFuRJwVBK4V1WupSFI4sZQrKZ2AvoWe9ThdWG6vd7hJ9BaV9fh1_MV_XwfniPSma8GmA3mzW7cjJPAX5SVbGktIaCVUFVZMiMhxOVCRFOmINvyU1lNq61bA49uTkaQvSO7gkI9pD0mkaThYNhUiTlxk4UA8bj7P7nMC21BZUkwxZBeTN3BumK_N8dTeEdsXmx6QbHWo7r3xX9J-Ed8X_arjuCjp_xx39tXXY_6CpaG-2UDSgOdhcaIVvaV-HE-pSyCGhHD8VrITPXEKT4oBU4Z1Z7gpJubMeAmqNX6et40slXPsO2yA-hg9j0F0J3OTRp3xPt5SHbNAfMjzTKGKTeBBGAd1R3ouGcZ-F8TiMRnEcYvwQ0O9jCdafMjwDFk5Hk0k8ZpPDDy-IUVA?type=png)](https://mermaid.live/edit#pako:eNq9Uz1vwjAQ_SuW50BNIBA8sNBKHdoKCXWpslj2QawmcXBsFYr4770QBQUhoFKlnpfcvXcf7xzvqTQKKKcVbDwUEh61WFuRJwVBK4V1WupSFI4sZQrKZ2AvoWe9ThdWG6vd7hJ9BaV9fh1_MV_XwfniPSma8GmA3mzW7cjJPAX5SVbGktIaCVUFVZMiMhxOVCRFOmINvyU1lNq61bA49uTkaQvSO7gkI9pD0mkaThYNhUiTlxk4UA8bj7P7nMC21BZUkwxZBeTN3BumK_N8dTeEdsXmx6QbHWo7r3xX9J-Ed8X_arjuCjp_xx39tXXY_6CpaG-2UDSgOdhcaIVvaV-HE-pSyCGhHD8VrITPXEKT4oBU4Z1Z7gpJubMeAmqNX6et40slXPsO2yA-hg9j0F0J3OTRp3xPt5SHbNAfMjzTKGKTeBBGAd1R3ouGcZ-F8TiMRnEcYvwQ0O9jCdafMjwDFk5Hk0k8ZpPDDy-IUVA)
 
