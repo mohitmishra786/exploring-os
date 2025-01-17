@@ -4,7 +4,7 @@ title: "Day 47: Security Mechanism in Kernel"
 permalink: /src/day-47-security-mechanism.html
 ---
 
-# Day 47: Building a Secure Kernel - Implementing Access Control and Authentication Mechanisms"
+# Day 47: Building a Secure Kernel - Implementing Access Control and Authentication Mechanisms
 
 ## Table of Contents
 1. **Introduction to Kernel Security**
