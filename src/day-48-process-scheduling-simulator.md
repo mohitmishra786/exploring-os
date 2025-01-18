@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Day 48: Process Scheduling Simulator"
+permalink: /src/day-48-process-scheduling-simulator.html
+---
+
 # Day 48: Building a Process Scheduling Simulator - From FCFS to Round Robin
 
 ## Table of Contents
