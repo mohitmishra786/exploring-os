@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Day 49: Network File System Internals"
+permalink: /src/day-49-network-file-system-internals.html
+---
 # Day 49: Exploring Network File System Internals - Simulating RPC and Cache Consistency
 
 ## Table of Contents
@@ -100,7 +105,6 @@ static int nfs_read(nfs_context_t *ctx,
 
     pthread_mutex_lock(&ctx->lock);
 
-    // Check cache first
     nfs_cache_entry_t *entry = find_cache_entry(ctx->cache, fh);
     if (entry && is_cache_valid(entry)) {
         memcpy(buffer, entry->data + offset, size);
