@@ -17,8 +17,7 @@ permalink: /src/day-51-error-handling-kernel-mechanisms.html
 8. **Performance Considerations**
 9. **Best Practices**
 10. **Code Examples**
-11. **Flow Diagrams**
-12. **Conclusion**
+11. **Conclusion**
 
 
 
@@ -96,7 +95,9 @@ int register_error_handler(int error_code, void (*handler)(void*)) {
 
 The `register_error_handler` function allows the kernel to register handler functions for specific error codes. When an error occurs, the kernel can invoke the appropriate handler to manage the error.
 
+[![](https://mermaid.ink/img/pako:eNqdU9FqwjAU_ZVwnzuptrY1D764gWMMxmQvw5eQXrXYpt1NwubEf19q7apUYSxPSc45956cJHuQZYrAQeOHRSXxPhNrEsVSMTcqQSaTWSWUYW8aiS0qIbGPLXbaYMFmIs_ZozJIq6u0JySFeX__gagkNhcqzZH68FxQ-inIFWywzsnddHq1NWfPYotMN5h0WKO8SnZFGmOcvVApUWtGdRjatA1F7o5oZQ01G_VoNLcdvKKxpFwpbXPTyW5Z6A71K9XnLTHX2AR1xcJFgPw0YXjJviA5URsrZ7MNyi3bnNZMG2Gw07W8fp_Wp-NbfbtRm-6JfrTVE_0xzkZcv9l_RXoWCaoUPCiQCpGl7gPs6-0lmA0WuATupimuRH13sFQHRxXWlIudksANWfSASrveAF8JdzMe2Cp1qZ1-T0txz_e9LM-XwPfwBXwYDsJoNJwEYTLx4zD2Yw92wIMwHiRJEETDZBiFfjQaHzz4PlbwB0mcTCI_iaNxOAkif3z4AUb9Oh8?type=png)](https://mermaid.live/edit#pako:eNqdU9FqwjAU_ZVwnzuptrY1D764gWMMxmQvw5eQXrXYpt1NwubEf19q7apUYSxPSc45956cJHuQZYrAQeOHRSXxPhNrEsVSMTcqQSaTWSWUYW8aiS0qIbGPLXbaYMFmIs_ZozJIq6u0JySFeX__gagkNhcqzZH68FxQ-inIFWywzsnddHq1NWfPYotMN5h0WKO8SnZFGmOcvVApUWtGdRjatA1F7o5oZQ01G_VoNLcdvKKxpFwpbXPTyW5Z6A71K9XnLTHX2AR1xcJFgPw0YXjJviA5URsrZ7MNyi3bnNZMG2Gw07W8fp_Wp-NbfbtRm-6JfrTVE_0xzkZcv9l_RXoWCaoUPCiQCpGl7gPs6-0lmA0WuATupimuRH13sFQHRxXWlIudksANWfSASrveAF8JdzMe2Cp1qZ1-T0txz_e9LM-XwPfwBXwYDsJoNJwEYTLx4zD2Yw92wIMwHiRJEETDZBiFfjQaHzz4PlbwB0mcTCI_iaNxOAkif3z4AUb9Oh8)
 
+This diagram shows how errors are propagated from user space to the kernel and back, ensuring that errors are handled gracefully.
 
 ## 4. Kernel Panic and Recovery
 
@@ -389,40 +390,6 @@ module_exit(error_handler_exit);
 
 This module demonstrates how to register and handle errors in the Linux kernel.
 
-
-
-## 11. Flow Diagrams
-
-The following sequence diagram illustrates the flow of error handling in the kernel:
-
-```plaintext
-sequenceDiagram
-    participant User Space
-    participant System Call Interface
-    participant Kernel
-    participant Error Handler
-    participant Hardware
-
-    User Space->>System Call Interface: Make system call
-    System Call Interface->>Kernel: Process request
-
-    alt Success
-        Kernel->>System Call Interface: Return result
-        System Call Interface->>User Space: Return success
-    else Error
-        Kernel->>Error Handler: Handle error
-        Error Handler->>Hardware: Check hardware state
-        Hardware->>Error Handler: Return status
-        Error Handler->>Kernel: Return error status
-        Kernel->>System Call Interface: Return error code
-        System Call Interface->>User Space: Return error
-    end
-```
-
-This diagram shows how errors are propagated from user space to the kernel and back, ensuring that errors are handled gracefully.
-
-
-
-## 12. Conclusion
+## 11. Conclusion
 
 Error handling in kernel mechanisms is a critical component of operating system design. Proper implementation ensures system stability, reliability, and security. The techniques and patterns discussed in this article provide a foundation for robust error handling in kernel development. By following best practices and leveraging the provided code examples, developers can create resilient and efficient kernel error handling mechanisms.
