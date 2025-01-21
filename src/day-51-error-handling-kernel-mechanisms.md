@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Day 51: Kernel Error Handling Mechanisms"
+permalink: /src/day-51-error-handling-kernel-mechanisms.html
+---
+
 # Day 51: Kernel Error Handling in Depth - From Exceptions to Recovery
 
 ## Table of Contents
