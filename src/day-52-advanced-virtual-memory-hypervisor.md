@@ -492,7 +492,7 @@ int run_hypervisor_tests(struct hypervisor* hv) {
             .setup = setup_ept_test,
             .teardown = teardown_ept_test,
         },
-        // Add more tests...
+        // we can add more test, if need but for today let's keep this like this
     };
 
     int i, ret;
