@@ -521,10 +521,6 @@ The `run_hypervisor_tests` function runs a series of tests to validate the hyper
 
 
 
-This diagram shows how memory access is handled in a hypervisor, including address translation and page fault handling.
-
-
-
 ## 14. Conclusion
 
 Virtual Memory Hypervisor implementation is a complex but crucial component of modern virtualization technology. This article has covered the fundamental concepts, implementation details, and best practices for building a robust hypervisor with advanced memory management capabilities. By following the techniques and patterns discussed in this article, developers can create efficient and secure hypervisors that meet the demands of modern virtualization workloads.
