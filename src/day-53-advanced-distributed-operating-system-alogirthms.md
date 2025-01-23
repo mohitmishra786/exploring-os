@@ -24,7 +24,7 @@ permalink: /src/day-53-advanced-distributed-operating-system-alogirthms.html
 
 ## 1. Introduction
 
-Distributed Operating System (DOS) algorithms are the backbone of modern distributed systems, enabling multiple nodes to work together seamlessly while maintaining consistency, fault tolerance, and performance. This article delves into advanced distributed algorithms and consensus protocols, such as Raft, Lamport clocks, Ricart-Agrawala mutual exclusion, and Two-Phase Commit. These algorithms are essential for building reliable, scalable, and efficient distributed systems.
+Distributed Operating System (DOS) algorithms are the backbone of modern distributed systems, enabling multiple nodes to work together seamlessly while maintaining consistency, fault tolerance, and performance. This article explains the advanced distributed algorithms and consensus protocols, such as Raft, Lamport clocks, Ricart-Agrawala mutual exclusion, and Two-Phase Commit. These algorithms are essential for building reliable, scalable, and efficient distributed systems.
 
 
 
