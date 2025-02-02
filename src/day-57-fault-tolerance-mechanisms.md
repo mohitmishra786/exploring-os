@@ -6,6 +6,19 @@ permalink: /src/day-57-fault-tolerance-mechanisms.html
 
 # Day 57: Fault Tolerance in Modern Operating Systems: Principles and Practices"
 
+## Table of Content
+- [Introduction](#introduction)
+- [Understanding Fault Tolerance](#understanding-fault-tolerance)
+- [Types of Faults](#types-of-faults)
+- [Recovery Techniques](#recovery-techniques)
+  - [4.1 Checkpoint-based Recovery](#41-checkpoint-based-recovery)
+  - [4.2 Log-based Recovery](#42-log-based-recovery)
+  - [4.3 Process Pairs](#43-process-pairs)
+  - [4.4 N-Version Programming](#44-n-version-programming)
+- [System Architecture](#system-architecture)
+- [Performance Considerations](#performance-considerations)
+- [Conclusion](#conclusion)
+
 ## 1. Introduction
 
 Fault tolerance is a critical aspect of modern operating systems that ensures system reliability and continuous operation even in the presence of hardware or software failures. This article explores the intricate details of fault tolerance mechanisms, focusing specifically on recovery techniques. Fault tolerance is essential for systems that require high availability, such as financial systems, healthcare systems, and cloud computing platforms.
