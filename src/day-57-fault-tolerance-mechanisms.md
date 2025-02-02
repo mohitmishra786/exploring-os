@@ -172,35 +172,7 @@ N-version programming involves running multiple versions of the same software in
 
 The system architecture for fault tolerance typically includes several components, such as a fault tolerance manager, checkpoint manager, log manager, and storage system. These components work together to detect faults, save system state, and recover from failures.
 
-```mermaid
-sequenceDiagram
-    participant App as Application
-    participant FT as Fault Tolerance Manager
-    participant CP as Checkpoint Manager
-    participant Log as Log Manager
-    participant Storage as Storage System
-
-    App->>FT: Initialize
-    FT->>CP: Create Checkpoint
-    CP->>Storage: Save State
-    Storage-->>CP: Confirmation
-    CP-->>FT: Checkpoint Created
-
-    loop Regular Intervals
-        FT->>Log: Write System State
-        Log->>Storage: Save Log Entry
-        Storage-->>Log: Confirmation
-    end
-
-    Note over App,Storage: System Failure Occurs
-
-    FT->>CP: Request Recovery
-    CP->>Storage: Load Last Checkpoint
-    Storage-->>CP: Return State
-    CP->>Log: Apply Recent Logs
-    Log-->>FT: Recovery Complete
-    FT-->>App: Resume Operation
-```
+[![](https://mermaid.ink/img/pako:eNp1k8GOmzAQhl_F8jkbhQBh8WGlii1SpbSNkkiVKi4WTIi1YFNjR2WjvHvHARK06XIxeL4Z__N7ONNcFUAZbeGPBZnDq-Cl5nUmCT4N10bkouHSkC9NQ3jrlkrk3AglH5l075CU28qQvapAc6xIvnPJS9CPeLJxeHKE_K1RAjc-JdeqdKhbPmV2RmmMOG583XWtAeylh1H608tLumfkmxRG8Eq8Qx9J9xhINowkGriBiaQ-nmwwPhRlZMdPWNog2EeHwNNYQ8mD0PXEIkwfDp702h9VjOIqpRqyhdJWXKM-A_rEq7aP3SRi_4z80sKMrU1luAeBB6XOtK_S6O6OTRRfSz5KBnlT9kPhceoE2hk4u9fuBaRcVFYD-ZnnVrdjzs3QrRur1uCauxLd__xcK16QNUfqo-8fnN2CsVpOe74Wurbg5rJzx0A_LoN1zpDB-1ECdls3FZj73SOA6Y5obY2tNDi4zgo6ozWgLaLAH-Ts8IyaI9SQUYavBRzcpGc0kxdEuTVq18mcMqMtzKhWtjxSdsBrxC_bFKh6-Ltuuzi4v5WqxxT8pOxM_1LmLb25H8ahF8fhcxCvvBntKIviub-MwzgKIt8LgtC_zOj7NX8xf175URSvfG-xDBf-Krj8A5RlPfI?type=png)](https://mermaid.live/edit#pako:eNp1k8GOmzAQhl_F8jkbhQBh8WGlii1SpbSNkkiVKi4WTIi1YFNjR2WjvHvHARK06XIxeL4Z__N7ONNcFUAZbeGPBZnDq-Cl5nUmCT4N10bkouHSkC9NQ3jrlkrk3AglH5l075CU28qQvapAc6xIvnPJS9CPeLJxeHKE_K1RAjc-JdeqdKhbPmV2RmmMOG583XWtAeylh1H608tLumfkmxRG8Eq8Qx9J9xhINowkGriBiaQ-nmwwPhRlZMdPWNog2EeHwNNYQ8mD0PXEIkwfDp702h9VjOIqpRqyhdJWXKM-A_rEq7aP3SRi_4z80sKMrU1luAeBB6XOtK_S6O6OTRRfSz5KBnlT9kPhceoE2hk4u9fuBaRcVFYD-ZnnVrdjzs3QrRur1uCauxLd__xcK16QNUfqo-8fnN2CsVpOe74Wurbg5rJzx0A_LoN1zpDB-1ECdls3FZj73SOA6Y5obY2tNDi4zgo6ozWgLaLAH-Ts8IyaI9SQUYavBRzcpGc0kxdEuTVq18mcMqMtzKhWtjxSdsBrxC_bFKh6-Ltuuzi4v5WqxxT8pOxM_1LmLb25H8ahF8fhcxCvvBntKIviub-MwzgKIt8LgtC_zOj7NX8xf175URSvfG-xDBf-Krj8A5RlPfI)
 
 In this architecture, the fault tolerance manager coordinates the checkpoint and log managers to save the system state and recover from failures. The storage system is used to store checkpoints and log entries, ensuring that the system can recover even after a complete failure.
 
