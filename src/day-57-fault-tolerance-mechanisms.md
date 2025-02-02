@@ -4,7 +4,7 @@ title: "Day 57: Fault Tolerance Mechanisms"
 permalink: /src/day-57-fault-tolerance-mechanisms.html
 ---
 
-# Day 57: Fault Tolerance in Modern Operating Systems: Principles and Practices"
+# Day 57: Fault Tolerance in Modern Operating Systems: Principles and Practices
 
 ## Table of Content
 - [Introduction](#introduction)
