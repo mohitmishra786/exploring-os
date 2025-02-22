@@ -3,7 +3,7 @@ layout: post
 title: "Day 60: Kernel Synchronization Primitives"
 permalink: /src/day-60-kernel-synchronization-primitives.html
 ---
-# Day 4: Kernel Synchronization Primitives - Deep Dive into Spinlocks and RCU
+# Day 60: Kernel Synchronization Primitives - Understanding Spinlocks and RCU
 
 ## 1. Introduction
 
