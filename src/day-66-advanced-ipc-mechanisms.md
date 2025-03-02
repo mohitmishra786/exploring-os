@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Day 65: Designing Advanced Signaling Mechanisms for Real-Time IPC in Modern Operating Systems"
+title: "Day 66: Designing Advanced Signaling Mechanisms for Real-Time IPC in Modern Operating Systems"
 permalink: /src/day-66-advanced-ipc-mechanisms.html
 ---
 # Day 66: Designing Advanced Signaling Mechanisms for Real-Time IPC in Modern Operating Systems
