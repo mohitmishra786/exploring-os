@@ -387,6 +387,4 @@ static void update_rt_metrics(struct rt_task_data *rt_task,
 
 ## 10. Conclusion
 
-Advanced process scheduling requires careful consideration of real-time constraints, priority management, and load balancing. The provided implementation demonstrates practical approaches to building a robust scheduling system suitable for modern operating systems. By following the principles and techniques discussed in this guide, you can design and implement a high-performance scheduler for real-time and general-purpose tasks.
-
-
+Advanced process scheduling requires careful consideration of real-time constraints, priority management, and load balancing. The provided implementation demonstrates practical approaches to building a robust scheduling system suitable for modern operating systems.
