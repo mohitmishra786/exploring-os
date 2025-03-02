@@ -161,22 +161,7 @@ static void print_stack_trace(void)
 
 The crash dump collection process is illustrated using a sequence diagram. The diagram shows the interaction between the kernel, debugger, crash handler, and storage.
 
-```mermaid
-sequenceDiagram
-    participant Kernel
-    participant Debugger
-    participant CrashHandler
-    participant Storage
-    
-    Kernel->>Debugger: Crash Detected
-    Debugger->>CrashHandler: Capture State
-    CrashHandler->>CrashHandler: Freeze CPUs
-    CrashHandler->>Storage: Save Memory Dump
-    CrashHandler->>Storage: Save Register State
-    CrashHandler->>Storage: Save Stack Trace
-    Storage-->>Debugger: Dump Complete
-    Debugger->>Kernel: Continue/Panic
-```
+[![](https://mermaid.ink/img/pako:eNqNklFPwjAQx79Kc88DN4Ex-8ALxJgYEyL6YvZydudoXNvZtUYgfHeL25IZiLEPTXv_3_2vvfYAwhQEHBr68KQFrSSWFlWuWRg1WieFrFE7dk9WU3UeX9GrL0uy58rSYrO9Q11Ul9SNMxZLaoV2bkuMFovek7ceoYYj4ahosV4N4LBEgLF23lKwRtcZD4Ez_tYS7Ykt18_NRbo7Imcb_CT2QMrYHVt5Vf-DfqRSNo7sH4f5nRA48c6eLIqO7uTRr36cqrOlUXVFveugHW0DQyOMdlJ7ulqjlgIiUGQVyiK88-GUlIPbkqIceFgW9Ia-cjnk-hhQ9M5sdloAd9ZTBNb4cttvfF2E23R_pA-G53wxZrgFfoAv4PE4Po35JI2TJEuT2U2cplkawQ74ZJaMs2w-z0Jgdj2ZTo8R7H9ckuM3uWPbBA?type=png)](https://mermaid.live/edit#pako:eNqNklFPwjAQx79Kc88DN4Ex-8ALxJgYEyL6YvZydudoXNvZtUYgfHeL25IZiLEPTXv_3_2vvfYAwhQEHBr68KQFrSSWFlWuWRg1WieFrFE7dk9WU3UeX9GrL0uy58rSYrO9Q11Ul9SNMxZLaoV2bkuMFovek7ceoYYj4ahosV4N4LBEgLF23lKwRtcZD4Ez_tYS7Ykt18_NRbo7Imcb_CT2QMrYHVt5Vf-DfqRSNo7sH4f5nRA48c6eLIqO7uTRr36cqrOlUXVFveugHW0DQyOMdlJ7ulqjlgIiUGQVyiK88-GUlIPbkqIceFgW9Ia-cjnk-hhQ9M5sdloAd9ZTBNb4cttvfF2E23R_pA-G53wxZrgFfoAv4PE4Po35JI2TJEuT2U2cplkawQ74ZJaMs2w-z0Jgdj2ZTo8R7H9ckuM3uWPbBA)
 
 
 
@@ -254,27 +239,11 @@ static void dump_memory_info(struct debug_context *ctx)
 
 
 
-## Debug Flow Visualization
+## Debug Flow
 
-The debug flow is visualized using a graph. The graph shows the steps involved in crash detection, state capture, and analysis.
+The below graph shows the steps involved in crash detection, state capture, and analysis.
 
-```mermaid
-graph TD
-    A[Crash Detection] --> B{Type of Crash}
-    B -->|Panic| C[Capture Full State]
-    B -->|Oops| D[Capture Minimal State]
-    B -->|Warning| E[Log Only]
-    C --> F[Memory Dump]
-    C --> G[Register State]
-    C --> H[Stack Trace]
-    D --> G
-    D --> H
-    F --> I[Analysis]
-    G --> I
-    H --> I
-    I --> J[Debug Report]
-```
-
+[![](https://mermaid.ink/img/pako:eNptkV9vgjAUxb9K02c0MBUZD0sU5p9Fs0VNlqz40EGFZtA2pU3GkO--CrpgsvvU3znn3ty2NYx5QqAPU4lFBja7iAFTMxRIXGYgJIrEinJ2BIPBE5jXh0oQwE-gtZsuPL945zfMaHwGAQqwUFoSsNB5DvYKK3Ls5165KM8g_IttKaMF_i_5jiWjLD2DZ7ThKXhleXX1g3abBdqSgssKhLoQd84S7UhKS0Xk3djOXCGjxV_gIHF8c8KurQ-rDhYtrNGM4bwqaXltWHZyB6s-rFt4QSH51CnYEcGlOkILFkQWmCbmqetLMIIqIwWJoG-OCTlhnasIRqwxUawV31cshr6SmlhQcp1mN9AiMTcKKTY_VtxEgdkH532Efg2_oW8P7UtNR67tOJ7rTB5t1_VcC1bQH02coedNp54RJg-j8bix4E87xWl-AUphn54?type=png)](https://mermaid.live/edit#pako:eNptkV9vgjAUxb9K02c0MBUZD0sU5p9Fs0VNlqz40EGFZtA2pU3GkO--CrpgsvvU3znn3ty2NYx5QqAPU4lFBja7iAFTMxRIXGYgJIrEinJ2BIPBE5jXh0oQwE-gtZsuPL945zfMaHwGAQqwUFoSsNB5DvYKK3Ls5165KM8g_IttKaMF_i_5jiWjLD2DZ7ThKXhleXX1g3abBdqSgssKhLoQd84S7UhKS0Xk3djOXCGjxV_gIHF8c8KurQ-rDhYtrNGM4bwqaXltWHZyB6s-rFt4QSH51CnYEcGlOkILFkQWmCbmqetLMIIqIwWJoG-OCTlhnasIRqwxUawV31cshr6SmlhQcp1mN9AiMTcKKTY_VtxEgdkH532Efg2_oW8P7UtNR67tOJ7rTB5t1_VcC1bQH02coedNp54RJg-j8bix4E87xWl-AUphn54)
 
 
 ## Live Debugging Features
