@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Day 69: Advanced Process Scheduling: Advanced Techniques for Real-Time and Priority-Based Task Management"
+title: "Day 69: Advanced Process Scheduling: Techniques for Real-Time and Priority-Based Task Management"
 permalink: /src/day-69-advanced-process-scheduling.html
 ---
 
-# Day 69: Advanced Process Scheduling: Advanced Techniques for Real-Time and Priority-Based Task Management
+# Day 69: Advanced Process Scheduling: Techniques for Real-Time and Priority-Based Task Management
 
 ## Table of Contents
 1. **Introduction**
