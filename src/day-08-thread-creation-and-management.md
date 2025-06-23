@@ -34,13 +34,13 @@ permalink: /src/day-08-thread-creation-and-management.html
 13. Conclusion
 14. References
 
----
+
 
 ## 1. Introduction
 
 POSIX Threads (Pthreads) is a standardized programming interface for thread creation and synchronization. This article provides an in-depth look at implementing and managing threads using the Pthreads API, with practical examples and best practices.
 
----
+
 
 ## 2. POSIX Threads Overview
 
@@ -60,7 +60,7 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
 int pthread_join(pthread_t thread, void **retval);
 int pthread_exit(void *retval);
 ```
----
+
 
 [![](https://mermaid.ink/img/pako:eNp9k8FKxDAQhl9lyHl9gR4WZD16UBcRpCAhmbbBJNNNJ-Ky7Lsb2wZa07WnNv_3z0z_JBehSKOoxICniF7hg5FtkA6g9pCeXgY2yvTSMzwF0lFh2NKeI0bcEg7kh-gm06TmMnf7_eiq4JHUJ7jI-J0rlMyhwwSZBk5jJzNAE63NvLR5hD_CdrE3aRjIgyf-GGlFXhs2aWn2ode3Z7nXGgyjA6Z5nJvo0bRe2rERup7PZafS8-rtKpCJy0H-F1vJlLFNY2zltlK2yy2Du_E_i-RK_ws6-sIpvCaQW8dX8ov4tveptKzTEzuRVCeNTmf88uupBXfosBZVetXYyGi5FrW_JlRGpuPZK1FxiLgTgWLbiaqRdkhfsdeS8wXJSDrk70Ruhq4_CQgZjQ?type=png)](https://mermaid.live/edit#pako:eNp9k8FKxDAQhl9lyHl9gR4WZD16UBcRpCAhmbbBJNNNJ-Ky7Lsb2wZa07WnNv_3z0z_JBehSKOoxICniF7hg5FtkA6g9pCeXgY2yvTSMzwF0lFh2NKeI0bcEg7kh-gm06TmMnf7_eiq4JHUJ7jI-J0rlMyhwwSZBk5jJzNAE63NvLR5hD_CdrE3aRjIgyf-GGlFXhs2aWn2ode3Z7nXGgyjA6Z5nJvo0bRe2rERup7PZafS8-rtKpCJy0H-F1vJlLFNY2zltlK2yy2Du_E_i-RK_ws6-sIpvCaQW8dX8ov4tveptKzTEzuRVCeNTmf88uupBXfosBZVetXYyGi5FrW_JlRGpuPZK1FxiLgTgWLbiaqRdkhfsdeS8wXJSDrk70Ruhq4_CQgZjQ)
 
@@ -158,7 +158,7 @@ int main() {
 }
 ```
 
----
+
 
 ## 4. Thread Management Operations
 
@@ -253,7 +253,7 @@ int main() {
 }
 ```
 
----
+
 
 ## 5. Thread Synchronization Primitives
 
@@ -375,7 +375,7 @@ int main() {
 }
 ```
 
----
+
 
 ## 6. Thread-Local Storage
 ```c
@@ -420,7 +420,7 @@ int main() {
 }
 ```
 
----
+
 
 ## 7. Advanced Thread Management
 
@@ -459,7 +459,7 @@ int main() {
 }
 ```
 
----
+
 
 ## 8. Complete Implementation Code
 
@@ -595,7 +595,7 @@ int main() {
    - Threads are created for both producers and consumers.
    - `pthread_join` ensures that the main thread waits for all threads to complete.
 
----
+
 
 ## 9. Common Pitfalls and Best Practices
 
@@ -628,7 +628,7 @@ int main() {
 4. **Test for Synchronization Issues**:
    - Use tools like Valgrind or ThreadSanitizer to detect race conditions and deadlocks.
 
----
+
 
 ## 10. Performance Optimization
 
@@ -651,7 +651,7 @@ int main() {
 3. **Avoid Busy Waiting**:
    - Use condition variables or semaphores instead of spinning in a loop.
 
----
+
 
 ## 11. Further Reading
 
@@ -667,13 +667,13 @@ int main() {
    - [POSIX Threads Programming](https://computing.llnl.gov/tutorials/pthreads/)
    - [Concurrency in C](https://en.cppreference.com/w/c/thread)
 
----
+
 
 ## 12. Conclusion
 
 Thread creation and management are essential skills for building efficient, concurrent applications. POSIX Threads (Pthreads) provide a robust API for creating, synchronizing, and managing threads. By understanding thread attributes, synchronization primitives, and best practices, developers can write scalable and performant multithreaded programs. However, care must be taken to avoid common pitfalls like race conditions and deadlocks.
 
----
+
 
 ## 13. References
 
@@ -683,4 +683,4 @@ Thread creation and management are essential skills for building efficient, conc
 4. GNU C Library Documentation: https://www.gnu.org/software/libc/manual/html_node/Threads.html
 5. Intel Threading Building Blocks: https://www.intel.com/content/www/us/en/developer/tools/oneapi/threading-building-blocks.html
 
----
+
