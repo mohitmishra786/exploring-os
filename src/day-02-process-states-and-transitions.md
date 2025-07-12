@@ -99,9 +99,7 @@ Process states represent the dynamic lifecycle of computational execution. Under
 
 ```c
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
 
 // Process state enumeration
 typedef enum {
@@ -156,7 +154,7 @@ int main() {
 ### For Linux/Unix Systems:
 ```bash
 # Compile the program
-gcc -o process_states process_states.c -pthread
+gcc -o process_states process_states.c
 
 # Run the executable
 ./process_states
@@ -164,8 +162,6 @@ gcc -o process_states process_states.c -pthread
 
 ### Compilation Flags Explanation
 - `-o process_states`: Specify output executable name
-- `-pthread`: Link with POSIX threads library
-- Ensures proper compilation with thread support
 
 ## 8. References and Further Reading
 
