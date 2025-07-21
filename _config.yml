@@ -8,6 +8,14 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
+# Web Analytics Settings
+analytics:
+  goatcounter:
+    id: exploringos # Your GoatCounter site code
+
+# GoatCounter configuration
+goatcounter: "exploringos" # Your GoatCounter site code
+
 defaults:
   - scope:
       path: ""
