@@ -24,14 +24,25 @@
     
     <!-- GoatCounter Analytics -->
     <script>
+        // Debug GoatCounter implementation
         window.goatcounter = {
             path: function(p) { 
-                // For GitHub Pages with baseurl, we want the full path including baseurl
+                console.log('GoatCounter tracking path:', p);
                 return p 
-            }
+            },
+            // Add some debugging
+            no_onload: false,
+            debug: true
         }
+        
+        // Additional debug info
+        console.log('GoatCounter: Script loading for site exploringos');
+        console.log('Current URL:', window.location.href);
+        console.log('Current path:', window.location.pathname);
     </script>
     <script data-goatcounter="https://exploringos.goatcounter.com/count"
-            async src="https://gc.zgo.at/count.js"></script>
+            async src="https://gc.zgo.at/count.js"
+            onload="console.log('GoatCounter script loaded successfully')"
+            onerror="console.error('Failed to load GoatCounter script')"></script>
 </body>
 </html>
