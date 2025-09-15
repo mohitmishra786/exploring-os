@@ -1,0 +1,42 @@
+---
+layout: post
+title: "Critical Section and Peterson's Solution"
+permalink: /extras/Critical Section and Peterson's Solution.html
+---
+
+## Critical Section  
+
+A **critical section** is a part of a program where shared resources (such as variables, files, or memory) are accessed.  
+To avoid **race conditions**, only one process should execute in the critical section at a time.  
+
+### Requirements of Critical Section Problem  
+Any solution must satisfy these three conditions:  
+1. **Mutual Exclusion** – Only one process can enter the critical section at a time.  
+2. **Progress** – If no process is in the critical section, the decision of which process will enter next cannot be postponed indefinitely.  
+3. **Bounded Waiting** – A process must not wait forever to enter the critical section.  
+
+---
+
+## Peterson’s Solution  
+
+Peterson’s solution is a classic software-based approach for achieving **mutual exclusion** in a two-process system.  
+
+### Assumptions:  
+- Two processes (P0 and P1).  
+- Shared variables:  
+  - `flag[2]` → Indicates if a process wants to enter the critical section.  
+  - `turn` → Indicates whose turn it is.  
+
+### Algorithm:  
+
+```c
+// For Process Pi (i = 0 or 1, j = 1 - i)
+
+flag[i] = true;       // Express interest
+turn = j;             // Give priority to other process
+while (flag[j] && turn == j); // Wait until safe
+
+// ---- Critical Section ----
+
+// Exit Section
+flag[i] = false;
