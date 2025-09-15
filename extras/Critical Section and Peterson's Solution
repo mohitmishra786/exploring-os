@@ -6,16 +6,41 @@ permalink: /extras/Critical Section and Peterson's Solution.html
 
 ## Critical Section  
 
-A **critical section** is a part of a program where shared resources (such as variables, files, or memory) are accessed.  
-To avoid **race conditions**, only one process should execute in the critical section at a time.  
+- It is that part of the program where **shared resources** are accessed.  
+- Only **one process** can execute the critical section at a given point of time.  
+- If there are no shared resources, then **no synchronization mechanisms** are required.  
+- A critical section is a **code segment** that can be accessed by only one process at a time.  
+- The critical section contains **shared variables** that need to be synchronized to maintain the consistency of data.  
+- Thus, the **critical section problem** means designing a way for cooperative processes to access shared resources **without causing data inconsistencies**.  
 
-### Requirements of Critical Section Problem  
-Any solution must satisfy these three conditions:  
-1. **Mutual Exclusion** – Only one process can enter the critical section at a time.  
-2. **Progress** – If no process is in the critical section, the decision of which process will enter next cannot be postponed indefinitely.  
-3. **Bounded Waiting** – A process must not wait forever to enter the critical section.  
+### General Structure of a Process  
 
----
+```c
+do {
+    // Entry Section
+        Critical Section
+
+    // Exit Section
+        Remainder Section
+} while (true);
+
+
+
+### Requirements of the Critical Section Problem  
+
+Any correct solution to the **Critical Section problem** must satisfy the following three requirements:  
+
+1. **Mutual Exclusion**  
+   - If one process is executing in its critical section, no other process is allowed to enter its critical section at the same time.  
+
+2. **Progress**  
+   - If no process is currently in the critical section and there are some processes waiting to enter, then only the processes **not in their remainder section** can participate in deciding who enters next.  
+   - The choice of the next process cannot be **indefinitely postponed**.  
+
+3. **Bounded Waiting**  
+   - Once a process makes a request to enter its critical section, there must exist a **limit** on how many times other processes are allowed to enter their critical sections **before this requesting process gets its turn**.  
+   - This prevents **starvation**.  
+
 
 ## Peterson’s Solution  
 
@@ -26,6 +51,8 @@ Peterson’s solution is a classic software-based approach for achieving **mutua
 - Shared variables:  
   - `flag[2]` → Indicates if a process wants to enter the critical section.  
   - `turn` → Indicates whose turn it is.  
+
+
 
 ### Algorithm:  
 
