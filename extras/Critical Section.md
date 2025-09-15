@@ -4,7 +4,7 @@ title: "Critical Section and Peterson's Solution"
 permalink: /extras/Critical Section and Peterson's Solution.html
 ---
 
-## Critical Section  
+# Critical Section  
 
 - It is that part of the program where **shared resources** are accessed.  
 - Only **one process** can execute the critical section at a given point of time.  
@@ -12,8 +12,6 @@ permalink: /extras/Critical Section and Peterson's Solution.html
 - A critical section is a **code segment** that can be accessed by only one process at a time.  
 - The critical section contains **shared variables** that need to be synchronized to maintain the consistency of data.  
 - Thus, the **critical section problem** means designing a way for cooperative processes to access shared resources **without causing data inconsistencies**.  
-
-### General Structure of a Process  
 
 ```c
 do {
@@ -26,7 +24,7 @@ do {
 ```
 
 
-### Requirements of the Critical Section Problem  
+### Requirements of Solution to a Critical Section Problem  
 
 Any correct solution to the **Critical Section problem** must satisfy the following three requirements:  
 
@@ -42,7 +40,7 @@ Any correct solution to the **Critical Section problem** must satisfy the follow
    - This prevents **starvation**.  
 
 
-## Peterson’s Solution  
+# Peterson’s Solution  
 
 - **Peterson’s Solution** is a classic **software-based approach** that allows **two processes** to take **turns** entering a **critical section** (the part of code where shared resources are accessed).  
 - It is designed to manage access to shared resources between two processes in a way that prevents **conflicts** or **data corruption**.  
@@ -83,7 +81,6 @@ Any correct solution to the **Critical Section problem** must satisfy the follow
 
 ---
 ### Pseudocode  
-
 ```c
 do {
     // Entry Section
@@ -103,5 +100,6 @@ do {
     // Other code that does not require shared resources
     
 } while (true);           // Repeat forever
-,,,
+```
+
 
