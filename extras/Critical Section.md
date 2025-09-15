@@ -23,7 +23,7 @@ do {
     // Exit Section
         Remainder Section
 } while (true);
-
+```
 
 
 ### Requirements of the Critical Section Problem  
@@ -47,39 +47,61 @@ Any correct solution to the **Critical Section problem** must satisfy the follow
 - **Peterson’s Solution** is a classic **software-based approach** that allows **two processes** to take **turns** entering a **critical section** (the part of code where shared resources are accessed).  
 - It is designed to manage access to shared resources between two processes in a way that prevents **conflicts** or **data corruption**.  
 - Peterson’s Algorithm relies on **two simple variables**:  
-  1. A **turn variable** → Indicates whose turn it is to enter the critical section.  
-  2. A **flag array** → Boolean values indicating whether a process wants to enter the critical section.  
+  1. A **turn variable** → Indicates _whose turn_ it is to enter the critical section.  
+  2. A **flag array** → Boolean values indicating whether a _process wants_ to enter the critical section.
+     
+- Peterson’s Solution satisfies all three requirements of the Critical Section problem: 
+    1. **Mutual Exclusion** → Only one process can access the critical section at a time.  
+    2. **Progress** → A process outside the critical section does not prevent others from entering.  
+    3. **Bounded Waiting** → Every process gets a fair chance; no process waits indefinitely. 
 
 ---
 
 ### How Peterson’s Solution Works  
+1. **Initial Setup**  
+   - Both `flag` values are `false`, meaning neither process wants to enter.  
+   - `turn` is set to either process (0 or 1), indicating whose turn it is.  
 
-- **flag[i] = true** → Process *i* wants to enter the critical section.  
-- **turn = j** → Gives the other process priority.  
-- **while(flag[j] && turn == j);** → Process *i* waits if the other process also wants to enter and it’s the other’s turn.  
-- Once conditions are met, process *i* enters the critical section.  
-- On exit, process *i* sets **flag[i] = false**.  
+2. **Intention to Enter**  
+   - A process sets its `flag[i] = true`, signaling its intent to enter.  
+
+3. **Set the Turn**  
+   - The process sets `turn = j`, giving priority to the other process.  
+
+4. **Waiting Loop**  
+   - A process waits if:  
+     - The other process wants to enter (`flag[j] == true`), **and**  
+     - It’s the other’s turn (`turn == j`).  
+   - This ensures only one process enters the critical section at a time.  
+
+5. **Critical Section**  
+   - The process enters safely and accesses shared resources.  
+
+6. **Exit**  
+   - After finishing, the process sets `flag[i] = false`.  
+   - This signals it no longer needs the critical section, allowing the other process to proceed.  
 
 ---
-
-### Properties of Peterson’s Solution  
-
-Peterson’s Solution satisfies all three requirements of the Critical Section problem:  
-
-1. **Mutual Exclusion** → Only one process can access the critical section at a time.  
-2. **Progress** → A process outside the critical section does not prevent others from entering.  
-3. **Bounded Waiting** → Every process gets a fair chance; no process waits indefinitely.  
-
----
-
 ### Pseudocode  
 
 ```c
-// For Process Pi (where j = 1 - i)
+do {
+    // Entry Section
 
-flag[i] = true;        // Express interest
-turn = j;              // Give priority to the other process
-while (flag[j] && turn == j); // Wait until it is safe
+    flag[i] = true;       // Process i shows interest in entering critical section
+    turn = j;             // Give priority to the other process (j)
+    while (flag[j] && turn == j);
 
+    // Wait if other process also wants to enter AND it is its turn
+    // Critical Section
+    // Code that accesses shared resources safely
+    // Exit Section
+
+    flag[i] = false;      // Process i leaves the critical section
+    
+    // Remainder Section
+    // Other code that does not require shared resources
+    
+} while (true);           // Repeat forever
 ,,,
 
