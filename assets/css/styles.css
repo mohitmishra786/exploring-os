@@ -128,3 +128,59 @@ body {
 .site-footer a:hover {
     color: var(--link-hover);
 }
+
+/* Dark Mode Diagram and Image Visibility */
+[data-theme="dark"] img {
+    filter: brightness(0.8) contrast(1.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+[data-theme="dark"] svg {
+    filter: brightness(1.2) contrast(0.9);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+/* Mermaid Diagrams Dark Mode */
+[data-theme="dark"] .mermaid {
+    filter: invert(0.9) hue-rotate(180deg);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+[data-theme="dark"] .mermaid svg {
+    filter: none; /* Reset svg filter for mermaid since we're inverting the container */
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Code blocks in dark mode */
+[data-theme="dark"] pre {
+    background-color: #2d3748;
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] code {
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+
+/* Tables in dark mode */
+[data-theme="dark"] table {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+    border-color: var(--border-color);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] th {
+    background-color: rgba(255, 255, 255, 0.1);
+}

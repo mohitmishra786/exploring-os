@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/styles.css">
+</head>
+<body>
+    {% include header.html %}
+
+    <main class="container">
+        {{ content }}
+    </main>
+
+    {% include footer.html %}
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" viewBox="0 0 24 24"><!-- Sun icon SVG --></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24"><!-- Moon icon SVG --></svg>
+    </button>
+
+    <script src="{{ site.baseurl }}/assets/js/theme.js"></script>
+    
+    <!-- GoatCounter Analytics -->
+    <script>
+        // Debug GoatCounter implementation
+        window.goatcounter = {
+            path: function(p) { 
+                console.log('GoatCounter tracking path:', p);
+                return p 
+            },
+            // Add some debugging
+            no_onload: false,
+            debug: true
+        }
+        
+        // Additional debug info
+        console.log('GoatCounter: Script loading for site exploringos');
+        console.log('Current URL:', window.location.href);
+        console.log('Current path:', window.location.pathname);
+    </script>
+    <script data-goatcounter="https://exploringos.goatcounter.com/count"
+            async src="https://gc.zgo.at/count.js"
+            onload="console.log('GoatCounter script loaded successfully')"
+            onerror="console.error('Failed to load GoatCounter script')"></script>
+</body>
+</html>

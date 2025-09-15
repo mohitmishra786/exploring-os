@@ -8,6 +8,12 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
+# Disable the default theme to use our custom layouts
+theme: null
+
+# GoatCounter Analytics
+goatcounter: "exploringos" # Your GoatCounter site code
+
 defaults:
   - scope:
       path: ""
