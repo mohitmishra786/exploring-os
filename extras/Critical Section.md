@@ -44,26 +44,42 @@ Any correct solution to the **Critical Section problem** must satisfy the follow
 
 ## Peterson’s Solution  
 
-Peterson’s solution is a classic software-based approach for achieving **mutual exclusion** in a two-process system.  
+- **Peterson’s Solution** is a classic **software-based approach** that allows **two processes** to take **turns** entering a **critical section** (the part of code where shared resources are accessed).  
+- It is designed to manage access to shared resources between two processes in a way that prevents **conflicts** or **data corruption**.  
+- Peterson’s Algorithm relies on **two simple variables**:  
+  1. A **turn variable** → Indicates whose turn it is to enter the critical section.  
+  2. A **flag array** → Boolean values indicating whether a process wants to enter the critical section.  
 
-### Assumptions:  
-- Two processes (P0 and P1).  
-- Shared variables:  
-  - `flag[2]` → Indicates if a process wants to enter the critical section.  
-  - `turn` → Indicates whose turn it is.  
+---
 
+### How Peterson’s Solution Works  
 
+- **flag[i] = true** → Process *i* wants to enter the critical section.  
+- **turn = j** → Gives the other process priority.  
+- **while(flag[j] && turn == j);** → Process *i* waits if the other process also wants to enter and it’s the other’s turn.  
+- Once conditions are met, process *i* enters the critical section.  
+- On exit, process *i* sets **flag[i] = false**.  
 
-### Algorithm:  
+---
+
+### Properties of Peterson’s Solution  
+
+Peterson’s Solution satisfies all three requirements of the Critical Section problem:  
+
+1. **Mutual Exclusion** → Only one process can access the critical section at a time.  
+2. **Progress** → A process outside the critical section does not prevent others from entering.  
+3. **Bounded Waiting** → Every process gets a fair chance; no process waits indefinitely.  
+
+---
+
+### Pseudocode  
 
 ```c
-// For Process Pi (i = 0 or 1, j = 1 - i)
+// For Process Pi (where j = 1 - i)
 
-flag[i] = true;       // Express interest
-turn = j;             // Give priority to other process
-while (flag[j] && turn == j); // Wait until safe
+flag[i] = true;        // Express interest
+turn = j;              // Give priority to the other process
+while (flag[j] && turn == j); // Wait until it is safe
 
-// ---- Critical Section ----
+,,,
 
-// Exit Section
-flag[i] = false;
